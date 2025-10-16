@@ -36,30 +36,26 @@ Return the problem details in JSON format according to the provided schema.`;
                             properties: {
                                 a: { type: Type.INTEGER, description: "Coefficient of y''" },
                                 b: { type: Type.INTEGER, description: "Coefficient of y'" },
-                                c: { type: Type.INTEGER, description: "Coefficient of y" }
+                                c: { type: Type.INTEGER, description: "Coefficient of y" },
                             },
+                            required: ['a', 'b', 'c'],
                         },
-                        solution: { type: Type.STRING, description: "The final general solution, e.g., y = C₁e^(m₁x) + C₂e^(m₂x)" },
-                        explanation: { type: Type.STRING, description: "A brief explanation of how the solution was derived." },
-                        case: { type: Type.STRING, description: "The case type: 'real_distinct', 'real_equal', or 'complex_conjugate'" }
+                        solution: { type: Type.STRING, description: "General solution" },
+                        explanation: { type: Type.STRING, description: "Explanation of solution steps" },
+                        case: { type: Type.STRING, description: "Type of roots (real_distinct, real_equal, complex_conjugate)" },
                     },
+                    required: ['equation', 'solution', 'explanation', 'case'],
                 },
             },
         });
-        
-        const jsonText = response.text.trim();
-        const problemData = JSON.parse(jsonText);
-        
-        // Basic validation
-        if (problemData.equation && typeof problemData.equation.a === 'number') {
-            return problemData as GeminiProblem;
-        } else {
-             console.error("Invalid data structure from API. Using fallback.", problemData);
-             return fallbackProblem;
-        }
 
-    } catch (error) {
-        console.error("Error generating problem from Gemini API:", error);
+        // Validate response
+        if (!response || !response.equation || !response.solution) {
+            return fallbackProblem;
+        }
+        return response as GeminiProblem;
+    } catch (err) {
+        console.error("Error generating problem:", err);
         return fallbackProblem;
     }
 };
