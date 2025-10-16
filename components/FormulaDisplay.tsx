@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Card from './common/Card';
 
@@ -32,7 +31,7 @@ const FormulaDisplay: React.FC = () => {
                     <div className="grid md:grid-cols-3 gap-4">
                         <div className="border border-slate-200 p-4 rounded-lg">
                             <p className="font-semibold">Kes 1: Punca Nyata & Berbeza</p>
-                            <p className="font-mono text-orange-600 mb-2">b<sup>2</sup> - 4ac > 0</p>
+                            <p className="font-mono text-orange-600 mb-2">b<sup>2</sup> - 4ac &gt; 0</p>
                             <p className="font-mono text-green-600">y = C₁e<sup>m₁x</sup> + C₂e<sup>m₂x</sup></p>
                         </div>
                         <div className="border border-slate-200 p-4 rounded-lg">
@@ -42,7 +41,7 @@ const FormulaDisplay: React.FC = () => {
                         </div>
                         <div className="border border-slate-200 p-4 rounded-lg">
                             <p className="font-semibold">Kes 3: Punca Kompleks Konjugat</p>
-                            <p className="font-mono text-orange-600 mb-2">b<sup>2</sup> - 4ac < 0</p>
+                            <p className="font-mono text-orange-600 mb-2">b<sup>2</sup> - 4ac &lt; 0</p>
                             <p className="font-mono text-green-600">y = e<sup>px</sup>(C₁cos(qx) + C₂sin(qx))</p>
                             <p className="text-xs text-text-light">di mana m = p ± iq</p>
                         </div>
