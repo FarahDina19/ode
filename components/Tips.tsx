@@ -27,7 +27,7 @@ const Tips: React.FC = () => {
                             <strong>Fokus pada Persamaan Ciri:</strong> Langkah paling penting ialah menukar persamaan pembezaan kepada persamaan kuadratik. Jika ini betul, selebihnya lebih mudah.
                         </li>
                          <li>
-                            <strong>Hafal Tiga Bentuk:</strong> Kenal pasti tiga bentuk penyelesaian am. Kaitkan setiap bentuk dengan nilai pembezalayan (>0, =0, <0).
+                            <strong>Hafal Tiga Bentuk:</strong> Kenal pasti tiga bentuk penyelesaian am. Kaitkan setiap bentuk dengan nilai pembezalayan (&gt;0, =0, &lt;0).
                         </li>
                          <li>
                             <strong>Semak jawapan:</strong> Walaupun tidak wajib, anda boleh membezakan penyelesaian anda dua kali dan masukkan semula ke dalam persamaan asal untuk mengesahkan ia sama dengan sifar.

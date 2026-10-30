@@ -21,7 +21,7 @@ const ReferenceCard: React.FC = () => {
                     </div>
                     <div className="grid md:grid-cols-3 gap-4">
                          <div className="p-3 bg-slate-50 rounded-lg">
-                            <p className="font-semibold text-sm">Kes 1: b²-4ac > 0</p>
+                            <p className="font-semibold text-sm">Kes 1: b²-4ac &gt; 0</p>
                             <p className="font-mono text-green-600">y = C₁e<sup>m₁x</sup> + C₂e<sup>m₂x</sup></p>
                             <p className="text-xs text-text-light">Punca nyata & berbeza.</p>
                         </div>
@@ -31,7 +31,7 @@ const ReferenceCard: React.FC = () => {
                             <p className="text-xs text-text-light">Punca nyata & sama.</p>
                         </div>
                          <div className="p-3 bg-slate-50 rounded-lg">
-                            <p className="font-semibold text-sm">Kes 3: b²-4ac < 0</p>
+                            <p className="font-semibold text-sm">Kes 3: b²-4ac &lt; 0</p>
                             <p className="font-mono text-green-600">y = e<sup>px</sup>(C₁cos(qx) + C₂sin(qx))</p>
                             <p className="text-xs text-text-light">Punca kompleks (m = p ± iq).</p>
                         </div>
