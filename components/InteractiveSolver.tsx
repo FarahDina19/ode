@@ -33,7 +33,7 @@ const InteractiveSolver: React.FC = () => {
         switch (currentStep) {
             case 'form_equation':
                 if (inputs.eq_a === '1' && inputs.eq_b === '-5' && inputs.eq_c === '6') {
-                    setFeedback({ ...feedback, eq: 'Betul! Persamaan ciri dibentuk dengan betul.' });
+                    setFeedback({ ...feedback, eq: 'Betul! Auxiliary equation dibentuk dengan betul.' });
                     setStatus({ ...status, eq: 'correct' });
                     setStep('discriminant');
                 } else {
@@ -44,7 +44,7 @@ const InteractiveSolver: React.FC = () => {
             case 'discriminant':
                 const disc = problem.b**2 - 4 * problem.a * problem.c;
                 if (parseInt(inputs.disc_val) === disc) {
-                    setFeedback({ ...feedback, disc: `Tepat! Nilai pembezalayan ialah ${disc}.` });
+                    setFeedback({ ...feedback, disc: `Tepat! Nilai discriminant ialah ${disc}.` });
                     setStatus({ ...status, disc: 'correct' });
                     setStep('case');
                 } else {
@@ -59,21 +59,21 @@ const InteractiveSolver: React.FC = () => {
                 else if (discValue === 0) correctCase = 'real_equal';
                 else correctCase = 'complex_conjugate';
                 if (inputs.case_type === correctCase) {
-                    setFeedback({ ...feedback, case: 'Tepat! Anda memilih kes yang betul.' });
+                    setFeedback({ ...feedback, case: 'Tepat! Anda memilih case yang betul.' });
                     setStatus({ ...status, case: 'correct' });
                     setStep('roots');
                 } else {
-                    setFeedback({ ...feedback, case: 'Cuba lagi. Pilih kes berdasarkan nilai discriminant.' });
+                    setFeedback({ ...feedback, case: 'Cuba lagi. Pilih case berdasarkan nilai discriminant.' });
                     setStatus({ ...status, case: 'incorrect' });
                 }
                 break;
             case 'roots':
                 if ((inputs.root1 === '2' && inputs.root2 === '3') || (inputs.root1 === '3' && inputs.root2 === '2')) {
-                    setFeedback({ ...feedback, roots: 'Cemerlang! Punca-puncanya ialah 2 dan 3.' });
+                    setFeedback({ ...feedback, roots: 'Cemerlang! Roots-nya ialah 2 dan 3.' });
                     setStatus({ ...status, roots: 'correct' });
                     setStep('solution');
                 } else {
-                    setFeedback({ ...feedback, roots: 'Tidak tepat. Gunakan formula kuadratik atau pemfaktoran untuk m² - 5m + 6 = 0.' });
+                    setFeedback({ ...feedback, roots: 'Tidak tepat. Gunakan quadratic formula atau factoring untuk m² - 5m + 6 = 0.' });
                     setStatus({ ...status, roots: 'incorrect' });
                 }
                 break;
@@ -84,7 +84,7 @@ const InteractiveSolver: React.FC = () => {
                     setFeedback({ ...feedback, sol: 'Tahniah! Penyelesaian lengkap dan betul.' });
                     setStatus({ ...status, sol: 'correct' });
                 } else {
-                    setFeedback({ ...feedback, sol: 'Kurang tepat. Sila semak semula bentuk umum penyelesaian untuk dua punca nyata dan berbeza.' });
+                    setFeedback({ ...feedback, sol: 'Kurang tepat. Sila semak semula general solution untuk dua real & distinct roots.' });
                     setStatus({ ...status, sol: 'incorrect' });
                 }
                 break;
@@ -94,7 +94,7 @@ const InteractiveSolver: React.FC = () => {
     return (
         <Card>
             <fieldset className="space-y-2 p-4 border rounded-lg">
-                <legend className="font-semibold px-2">Langkah 1: Bentuk Persamaan Ciri</legend>
+                <legend className="font-semibold px-2">Langkah 1: Bentuk Auxiliary Equation</legend>
                 <div className="flex items-center space-x-2 font-mono text-xl">
                     (<input type="text" value={inputs.eq_a} onChange={e => setInputs({...inputs, eq_a: e.target.value})} className={`w-12 text-center p-1 border-2 rounded ${getInputClass(status.eq)}`} />)m² +
                     (<input type="text" value={inputs.eq_b} onChange={e => setInputs({...inputs, eq_b: e.target.value})} className={`w-12 text-center p-1 border-2 rounded ${getInputClass(status.eq)}`} />)m +
@@ -105,7 +105,7 @@ const InteractiveSolver: React.FC = () => {
             </fieldset>
             {/* Step 2 */}
             <fieldset disabled={isStepDisabled('discriminant')} className="space-y-2 p-4 border rounded-lg">
-                <legend className="font-semibold px-2">Langkah 2: Kira Pembezalayan (b² - 4ac)</legend>
+                <legend className="font-semibold px-2">Langkah 2: Kira Discriminant (b² - 4ac)</legend>
                 <input type="text" value={inputs.disc_val} onChange={e => setInputs({...inputs, disc_val: e.target.value})} placeholder="Nilai" className={`w-24 text-center p-1 border-2 rounded ${getInputClass(status.disc)}`} />
                 {feedback.disc && <p className={`p-2 rounded text-sm ${getFeedbackClass(status.disc)}`}>{feedback.disc}</p>}
                 {status.disc !== 'correct' && <Button onClick={() => handleCheck('discriminant')}>Semak Langkah 2</Button>}

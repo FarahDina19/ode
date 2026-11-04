@@ -4,7 +4,7 @@ import { GeminiProblem } from '../types';
 const fallbackProblem: GeminiProblem = {
     equation: { a: 1, b: -3, c: 2 },
     solution: "y = C₁e^(2x) + C₂e^x",
-    explanation: "Kes ini mempunyai punca nyata dan berbeza. Persamaan ciri ialah m² - 3m + 2 = 0, yang memberikan punca m=1 dan m=2.",
+    explanation: "Kes ini mempunyai real & distinct roots. Auxiliary equation ialah m² - 3m + 2 = 0, yang memberikan roots m=1 dan m=2.",
     case: 'real_distinct',
 };
 
@@ -21,6 +21,7 @@ export const generateProblem = async (difficulty: 'Mudah' | 'Sederhana' | 'Menca
 - For 'Mudah' difficulty, ensure roots are small integers.
 - For 'Sederhana' difficulty, roots can be larger integers or simple fractions.
 - For 'Mencabar' difficulty, use larger coefficients that result in complex roots.
+Write the 'explanation' field in Bahasa Melayu, but keep mathematical terms (for example auxiliary equation, discriminant, roots, general solution) in English.
 Return the problem details in JSON format according to the provided schema.`;
 
         const response = await ai.models.generateContent({

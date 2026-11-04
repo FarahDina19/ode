@@ -101,7 +101,7 @@ const PracticeArea: React.FC = () => {
                                 type="text"
                                 value={userAnswer}
                                 onChange={(e) => setUserAnswer(e.target.value)}
-                                placeholder="Tulis penyelesaian am di sini"
+                                placeholder="Tulis general solution di sini"
                                 className="p-2 border-2 border-slate-300 rounded-lg font-mono text-lg focus:ring-2 focus:ring-primary focus:border-primary"
                             />
                         </div>
@@ -126,7 +126,7 @@ const PracticeArea: React.FC = () => {
 
                         {showSolution && (
                             <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                                <h4 className="font-bold text-amber-800">Penyelesaian:</h4>
+                                <h4 className="font-bold text-amber-800">Solution:</h4>
                                 <p className="font-mono text-amber-900">{problem.solution}</p>
                                 <h4 className="font-bold text-amber-800 mt-2">Penerangan:</h4>
                                 <p className="text-amber-900">{problem.explanation}</p>

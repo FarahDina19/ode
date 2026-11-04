@@ -5,7 +5,7 @@ import Card from './common/Card';
 const WorkedExamples: React.FC = () => {
     const examples = [
         {
-            title: "Kes 1: Punca Nyata & Berbeza",
+            title: "Case 1: Real & Distinct Roots",
             problem: "y'' + y' - 6y = 0",
             auxiliary: "m² + m - 6 = 0",
             discriminant: "1² - 4(1)(-6) = 25 > 0",
@@ -14,7 +14,7 @@ const WorkedExamples: React.FC = () => {
             visual: "Sistem kembali kepada rehat tanpa ayunan (overdamped/critically damped)."
         },
         {
-            title: "Kes 2: Punca Nyata & Sama",
+            title: "Case 2: Real & Equal Roots",
             problem: "y'' - 4y' + 4y = 0",
             auxiliary: "m² - 4m + 4 = 0",
             discriminant: "(-4)² - 4(1)(4) = 0",
@@ -23,7 +23,7 @@ const WorkedExamples: React.FC = () => {
             visual: "Sistem kembali kepada rehat dengan paling cepat tanpa ayunan (critically damped)."
         },
         {
-            title: "Kes 3: Punca Kompleks Konjugat",
+            title: "Case 3: Complex Conjugate Roots",
             problem: "y'' + 2y' + 5y = 0",
             auxiliary: "m² + 2m + 5 = 0",
             discriminant: "2² - 4(1)(5) = -16 < 0",
@@ -42,13 +42,13 @@ const WorkedExamples: React.FC = () => {
                         <h3 className="text-xl font-semibold mb-2 text-primary">{ex.title}</h3>
                         <div className="grid md:grid-cols-2 gap-4">
                             <div>
-                                <h4 className="font-semibold">Penyelesaian Simbolik</h4>
+                                <h4 className="font-semibold">Symbolic Solution</h4>
                                 <ul className="space-y-1 mt-2 text-sm">
-                                    <li><strong>Masalah:</strong> <span className="font-mono">{ex.problem}</span></li>
-                                    <li><strong>Persamaan Ciri:</strong> <span className="font-mono">{ex.auxiliary}</span></li>
-                                    <li><strong>Pembezalayan:</strong> <span className="font-mono text-orange-600">{ex.discriminant}</span></li>
-                                    <li><strong>Punca:</strong> <span className="font-mono">{ex.roots}</span></li>
-                                    <li><strong>Penyelesaian Am:</strong> <span className="font-mono text-green-600">{ex.solution}</span></li>
+                                    <li><strong>Problem:</strong> <span className="font-mono">{ex.problem}</span></li>
+                                    <li><strong>Auxiliary Equation:</strong> <span className="font-mono">{ex.auxiliary}</span></li>
+                                    <li><strong>Discriminant:</strong> <span className="font-mono text-orange-600">{ex.discriminant}</span></li>
+                                    <li><strong>Roots:</strong> <span className="font-mono">{ex.roots}</span></li>
+                                    <li><strong>General Solution:</strong> <span className="font-mono text-green-600">{ex.solution}</span></li>
                                 </ul>
                             </div>
                             <div className="bg-slate-50 p-3 rounded">
