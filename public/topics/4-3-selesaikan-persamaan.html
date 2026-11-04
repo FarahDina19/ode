@@ -1226,6 +1226,10 @@
             min-width: 200px;
         }
 
+        .progress-tracker.minimized { min-width: 0; padding: 12px 16px; }
+        .progress-tracker.minimized .progress-item { display: none; }
+        .progress-tracker.minimized .progress-title { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
         .progress-title {
             font-weight: 700;
             color: var(--dark);
@@ -2175,8 +2179,10 @@
         </div>
 
         <!-- Progress Tracker (Fixed Position) -->
-        <div class="progress-tracker">
-            <div class="progress-title">Progress Tracker</div>
+        <div class="progress-tracker minimized" id="progress-tracker">
+            <div class="progress-title" onclick="toggleProgressTracker()" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                <span>Progress Tracker</span><span id="progress-toggle">+</span>
+            </div>
             <div class="progress-item">
                 <div class="progress-check" id="check-1">✓</div>
                 <span>Explored Examples</span>
@@ -2269,6 +2275,13 @@
              return ` ${sign} ${displayValue}${variable} `;
          }
 
+
+        // Collapse or expand the progress tracker so it does not cover the page
+        function toggleProgressTracker() {
+            const tracker = document.getElementById('progress-tracker');
+            const minimized = tracker.classList.toggle('minimized');
+            document.getElementById('progress-toggle').textContent = minimized ? '+' : '−';
+        }
 
         // Stacked fraction markup (matches the .fraction styles)
         function frac(num, den) {
