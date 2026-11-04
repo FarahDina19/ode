@@ -87,6 +87,25 @@ const Landing: React.FC = () => {
                         <a href="#tutor" className="hover:text-primary transition-colors">Tutor</a>
                     </nav>
 
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={() => window.history.back()}
+                            aria-label="Kembali"
+                            className="h-9 w-9 rounded-full border border-slate-300 text-text-dark hover:bg-slate-900 hover:text-white transition-colors"
+                        >
+                            &larr;
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => window.history.forward()}
+                            aria-label="Ke hadapan"
+                            className="h-9 w-9 rounded-full border border-slate-300 text-text-dark hover:bg-slate-900 hover:text-white transition-colors"
+                        >
+                            &rarr;
+                        </button>
+                    </div>
+
                     <a
                         href="#topik"
                         className="rounded-full border border-slate-300 px-5 py-2 text-sm font-semibold text-text-dark hover:bg-slate-900 hover:text-white transition-colors"
