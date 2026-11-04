@@ -1,62 +1,5 @@
 import React from 'react';
-
-interface TopicPage {
-    label: string;
-    href: string;
-}
-
-interface Topic {
-    code: string;
-    title: string;
-    pages: TopicPage[];
-    outcomes: string[];
-    activities?: string[];
-}
-
-// Subtopics follow the ODE unit plan (4.1 - 4.3).
-const TOPICS: Topic[] = [
-    {
-        code: '4.1',
-        title: 'Introduction to Ordinary Differential Equations',
-        pages: [{ label: 'Pengenalan ODE', href: 'topics/4-1-pengenalan-ode.html' }],
-        outcomes: [
-            'Introduce differential equations using a few examples related to mechanical systems.',
-            'Classify differential equations according to their order and degree.',
-            'Explain the meaning of order and degree of a differential equation and how to classify it.',
-        ],
-    },
-    {
-        code: '4.2',
-        title: 'First Order Differential Equations',
-        pages: [
-            { label: 'Pemisahan Pembolehubah', href: 'topics/4-2-pemisahan-pembolehubah.html' },
-            { label: 'Faktor Pengamiran', href: 'topics/4-2-faktor-pengamiran.html' },
-        ],
-        outcomes: [
-            'Solve first order differential equations by using the separation of variables method.',
-            'Find the solution of a first order differential equation by using separation of variables.',
-            'Solve first order differential equations by using the integrating factor.',
-            'Find the solution of first order differential equations by finding the integrating factor.',
-        ],
-    },
-    {
-        code: '4.3',
-        title: 'Second Order Differential Equations',
-        pages: [
-            { label: 'Tutor Interaktif', href: '#tutor' },
-            { label: 'Selesaikan Persamaan', href: 'topics/4-3-selesaikan-persamaan.html' },
-        ],
-        outcomes: [
-            'Solve homogeneous second order differential equations.',
-        ],
-        activities: [
-            'Form the auxiliary equation from the given second order differential equation.',
-            'Solve the homogeneous equation depending on the roots of the auxiliary equation.',
-            'Choose the type of solution by the discriminant b² − 4ac: > 0 real and distinct roots, = 0 real and equal roots, < 0 complex conjugate roots m = p ± qi.',
-            'Find complex conjugate roots by using the quadratic formula.',
-        ],
-    },
-];
+import { Topic, TOPICS } from './topics';
 
 // Decorative solution curves (over-damped, critically damped, under-damped),
 // the same behaviour the tutor's introduction describes.
@@ -112,35 +55,15 @@ const TopicCard: React.FC<{ topic: Topic }> = ({ topic }) => (
         </div>
 
         <h3 className="mt-3 text-xl font-bold text-text-dark">{topic.title}</h3>
+        <p className="mt-3 text-sm text-text-light">{topic.summary}</p>
 
-        <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-text-light">Hasil Pembelajaran</p>
-        <ul className="mt-2 list-disc list-outside pl-5 space-y-2 text-sm text-text-dark">
-            {topic.outcomes.map(item => (
-                <li key={item}>{item}</li>
-            ))}
-        </ul>
-
-        {topic.activities && (
-            <>
-                <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-text-light">Aktiviti Pengajaran</p>
-                <ol className="mt-2 list-decimal list-outside pl-5 space-y-2 text-sm text-text-dark">
-                    {topic.activities.map(item => (
-                        <li key={item}>{item}</li>
-                    ))}
-                </ol>
-            </>
-        )}
-
-        <div className="mt-auto flex flex-wrap gap-2 pt-6">
-            {topic.pages.map(page => (
-                <a
-                    key={page.href}
-                    href={page.href}
-                    className="inline-block rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-colors"
-                >
-                    {page.label} &rarr;
-                </a>
-            ))}
+        <div className="mt-auto pt-6">
+            <a
+                href={`#topik/${topic.id}`}
+                className="inline-block rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-colors"
+            >
+                Lihat Topik &rarr;
+            </a>
         </div>
     </article>
 );
@@ -210,7 +133,7 @@ const Landing: React.FC = () => {
 
                     <div className="mt-12 grid gap-6 md:grid-cols-3">
                         {TOPICS.map(topic => (
-                            <TopicCard key={topic.code} topic={topic} />
+                            <TopicCard key={topic.id} topic={topic} />
                         ))}
                     </div>
                 </div>

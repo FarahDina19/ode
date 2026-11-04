@@ -10,8 +10,24 @@ import ReferenceCard from './components/ReferenceCard';
 import Tips from './components/Tips';
 import Guide from './components/Guide';
 import Landing from './components/Landing';
+import TopicLanding from './components/TopicLanding';
+import { topicFromHash } from './components/topics';
 
 const App: React.FC = () => {
+    // Hash routing: "#topik/4-2" shows that subtopic's landing page; other hashes show the main page.
+    const [hash, setHash] = React.useState(window.location.hash);
+
+    React.useEffect(() => {
+        const onChange = () => setHash(window.location.hash);
+        window.addEventListener('hashchange', onChange);
+        return () => window.removeEventListener('hashchange', onChange);
+    }, []);
+
+    const topic = topicFromHash(hash);
+    if (topic) {
+        return <TopicLanding topic={topic} />;
+    }
+
     return (
         <div className="bg-background-light min-h-screen text-text-dark">
             <Landing />
