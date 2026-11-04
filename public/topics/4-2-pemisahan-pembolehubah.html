@@ -775,6 +775,8 @@
             color: #6b7280;
         }
     </style>
+<script>window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 </head>
 <body>
     <div class="container">
@@ -812,20 +814,20 @@
                 <div class="visual-demo">
                     <h4>🔍 Definisi Mudah:</h4>
                     <p>Differential equation adalah <strong>persamaan yang mengandungi derivative</strong> (kadar perubahan).</p>
-                    <p><strong>First Order</strong> bermaksud derivative tertinggi adalah dy/dx (first derivative sahaja).</p>
+                    <p><strong>First Order</strong> bermaksud derivative tertinggi adalah \(\frac{dy}{dx}\) (first derivative sahaja).</p>
                     
                     <div class="diagram-container">
                         <div class="flow-diagram">
                             <div class="flow-box input">Fungsi y</div>
                             <div class="flow-arrow">→</div>
-                            <div class="flow-box process">Derivative dy/dx</div>
+                            <div class="flow-box process">Derivative \(\frac{dy}{dx}\)</div>
                             <div class="flow-arrow">→</div>
                             <div class="flow-box output">Hubungan dengan x dan y</div>
                         </div>
                     </div>
                 </div>
 
-                <p><strong>Matlamat kita:</strong> Cari fungsi asal <em>y(x)</em> dari persamaan yang melibatkan <em>dy/dx</em></p>
+                <p><strong>Matlamat kita:</strong> Cari fungsi asal <em>y(x)</em> dari persamaan yang melibatkan <em>\(\frac{dy}{dx}\)</em></p>
             </div>
 
             <!-- SECTION 2: VISUAL - Formula Display -->
@@ -1726,7 +1728,7 @@
             
             // Could generate different problems here
             // For now, keeping the default problem
-            alert('🎯 Soalan baru: dy/dx = 2x · y dengan y(0) = 1\n\nCuba selesaikan dari mula!');
+            alert('🎯 Soalan baru: dy/dx = 2xy dengan y(0) = 1\n\nCuba selesaikan dari mula!');
         }
 
         function resetSolver() {
@@ -1792,19 +1794,19 @@
         function generatePracticeProblem() {
             const problems = {
                 easy: [
-                    { equation: "dy/dx = x", answer: "y = x^2/2 + C" },
-                    { equation: "dy/dx = 2y", answer: "ln(y) = 2x + C" },
-                    { equation: "dy/dx = 3x^2", answer: "y = x^3 + C" }
+                    { equation: "dy/dx = x", answer: "y = x^2/2 + C", eqTex: "\\frac{dy}{dx} = x", ansTex: "y = \\frac{x^2}{2} + C" },
+                    { equation: "dy/dx = 2y", answer: "ln(y) = 2x + C", eqTex: "\\frac{dy}{dx} = 2y", ansTex: "\\ln(y) = 2x + C" },
+                    { equation: "dy/dx = 3x^2", answer: "y = x^3 + C", eqTex: "\\frac{dy}{dx} = 3x^2", ansTex: "y = x^3 + C" }
                 ],
                 medium: [
-                    { equation: "dy/dx = xy", answer: "ln(y) = x^2/2 + C" },
-                    { equation: "dy/dx = y/x", answer: "ln(y) = ln(x) + C" },
-                    { equation: "dy/dx = 2x/y", answer: "y^2 = 2x^2 + C" }
+                    { equation: "dy/dx = xy", answer: "ln(y) = x^2/2 + C", eqTex: "\\frac{dy}{dx} = xy", ansTex: "\\ln(y) = \\frac{x^2}{2} + C" },
+                    { equation: "dy/dx = y/x", answer: "ln(y) = ln(x) + C", eqTex: "\\frac{dy}{dx} = \\frac{y}{x}", ansTex: "\\ln(y) = \\ln(x) + C" },
+                    { equation: "dy/dx = 2x/y", answer: "y^2 = 2x^2 + C", eqTex: "\\frac{dy}{dx} = \\frac{2x}{y}", ansTex: "y^{2} = 2x^{2} + C" }
                 ],
                 hard: [
-                    { equation: "dy/dx = (x^2)(y^2)", answer: "1/y = -x^3/3 + C" },
-                    { equation: "dy/dx = e^x/y", answer: "y^2 = 2e^x + C" },
-                    { equation: "dy/dx = xy^2", answer: "1/y = -x^2/2 + C" }
+                    { equation: "dy/dx = (x^2)(y^2)", answer: "1/y = -x^3/3 + C", eqTex: "\\frac{dy}{dx} = x^{2}y^{2}", ansTex: "\\frac{1}{y} = -\\frac{x^{3}}{3} + C" },
+                    { equation: "dy/dx = e^x/y", answer: "y^2 = 2e^x + C", eqTex: "\\frac{dy}{dx} = \\frac{e^{x}}{y}", ansTex: "y^{2} = 2e^{x} + C" },
+                    { equation: "dy/dx = xy^2", answer: "1/y = -x^2/2 + C", eqTex: "\\frac{dy}{dx} = xy^{2}", ansTex: "\\frac{1}{y} = -\\frac{x^{2}}{2} + C" }
                 ]
             };
             
@@ -1813,7 +1815,9 @@
             
             practiceState.currentProblem = randomProblem;
             
-            document.getElementById('practiceEquation').textContent = randomProblem.equation;
+            const eqEl = document.getElementById('practiceEquation');
+            eqEl.innerHTML = '\\(' + randomProblem.eqTex + '\\)';
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([eqEl]);
             document.getElementById('practiceArea').style.display = 'block';
             document.getElementById('practiceAnswer').value = '';
             document.getElementById('practiceFeedback').style.display = 'none';
@@ -1855,7 +1859,7 @@
                 <div class="example-container">
                     <h4>📖 Penyelesaian Lengkap:</h4>
                     <div class="example-step">
-                        <strong>Given:</strong> ${practiceState.currentProblem.equation}
+                        <strong>Given:</strong> \\(${practiceState.currentProblem.eqTex}\\)
                     </div>
                     <div class="example-step">
                         <strong>Step 1:</strong> Pisahkan pembolehubah (bergantung kepada soalan)
@@ -1864,13 +1868,14 @@
                         <strong>Step 2:</strong> Integrate kedua-dua belah
                     </div>
                     <div class="example-step" style="background: #dcfce7;">
-                        <strong>Jawapan:</strong> ${practiceState.currentProblem.answer}
+                        <strong>Jawapan:</strong> \\(${practiceState.currentProblem.ansTex}\\)
                     </div>
                     <p style="margin-top: 15px; color: #555; font-style: italic;">
                         💡 Cuba selesaikan sendiri step-by-step menggunakan kaedah separation of variables untuk lebih faham!
                     </p>
                 </div>
             `;
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([solutionDiv]);
         }
 
         function updateScore() {
