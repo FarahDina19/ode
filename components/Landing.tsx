@@ -1,9 +1,14 @@
 import React from 'react';
 
+interface TopicPage {
+    label: string;
+    href: string;
+}
+
 interface Topic {
     code: string;
     title: string;
-    available: boolean;
+    pages: TopicPage[];
     outcomes: string[];
     activities?: string[];
 }
@@ -13,7 +18,7 @@ const TOPICS: Topic[] = [
     {
         code: '4.1',
         title: 'Introduction to Ordinary Differential Equations',
-        available: false,
+        pages: [{ label: 'Pengenalan ODE', href: 'topics/4-1-pengenalan-ode.html' }],
         outcomes: [
             'Introduce differential equations using a few examples related to mechanical systems.',
             'Classify differential equations according to their order and degree.',
@@ -23,7 +28,10 @@ const TOPICS: Topic[] = [
     {
         code: '4.2',
         title: 'First Order Differential Equations',
-        available: false,
+        pages: [
+            { label: 'Pemisahan Pembolehubah', href: 'topics/4-2-pemisahan-pembolehubah.html' },
+            { label: 'Faktor Pengamiran', href: 'topics/4-2-faktor-pengamiran.html' },
+        ],
         outcomes: [
             'Solve first order differential equations by using the separation of variables method.',
             'Find the solution of a first order differential equation by using separation of variables.',
@@ -34,7 +42,10 @@ const TOPICS: Topic[] = [
     {
         code: '4.3',
         title: 'Second Order Differential Equations',
-        available: true,
+        pages: [
+            { label: 'Tutor Interaktif', href: '#tutor' },
+            { label: 'Selesaikan Persamaan', href: 'topics/4-3-selesaikan-persamaan.html' },
+        ],
         outcomes: [
             'Solve homogeneous second order differential equations.',
         ],
@@ -95,12 +106,8 @@ const TopicCard: React.FC<{ topic: Topic }> = ({ topic }) => (
     <article className="flex flex-col rounded-2xl border border-slate-200 bg-background-light/60 p-6 shadow-sm">
         <div className="flex items-center justify-between gap-3">
             <span className="text-sm font-bold text-primary">{topic.code}</span>
-            <span
-                className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                    topic.available ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                }`}
-            >
-                {topic.available ? 'Tersedia' : 'Akan Datang'}
+            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">
+                Tersedia
             </span>
         </div>
 
@@ -124,19 +131,16 @@ const TopicCard: React.FC<{ topic: Topic }> = ({ topic }) => (
             </>
         )}
 
-        <div className="mt-auto pt-6">
-            {topic.available ? (
+        <div className="mt-auto flex flex-wrap gap-2 pt-6">
+            {topic.pages.map(page => (
                 <a
-                    href="#tutor"
+                    key={page.href}
+                    href={page.href}
                     className="inline-block rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 transition-colors"
                 >
-                    Buka Tutor &rarr;
+                    {page.label} &rarr;
                 </a>
-            ) : (
-                <span className="inline-block rounded-lg bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500">
-                    Belum tersedia
-                </span>
-            )}
+            ))}
         </div>
     </article>
 );

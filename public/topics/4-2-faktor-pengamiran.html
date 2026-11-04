@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Order Differential Equation - Integrating Factor Method</title>
+
+    <!-- ============================================
+         MATHJAX CONFIGURATION (for proper math rendering)
+         ============================================ -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['color', 'cancel']}
+            },
+            loader: {load: ['[tex]/color', '[tex]/cancel']},
+            svg: { fontCache: 'global' },
+            startup: {
+                ready() {
+                    MathJax.startup.defaultReady();
+                }
+            },
+            options: {
+                renderActions: {
+                    addMenu: [0, '', '']  // disable MathJax context menu
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+
+    <style>
+        /* ============================================
+            COLOR SYSTEM
+            ============================================ */
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #06b6d4;
+            --background-light: #f9fafb;
+            --background-card: #ffffff;
+            --input-color: #3b82f6;
+            --operation-color: #f97316;  /* Orange for P(x) */
+            --result-color: #10b981;     /* Green for Q(x) */
+            --mu-color: #f59e0b;          /* Yellow/Orange for μ(x) */
+            --highlight-color: #fef3c7;
+            --border-color: #e5e7eb;
+            --text-dark: #1f2937;
+            --text-medium: #6b7280;
+            --guide-background: #e0f2fe;
+        }
+
+        /* ============================================
+            RESET & BASE STYLES
+            ============================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: max(15px, 3vw);
+            min-height: 100vh;
+            font-size: 16px;
+        }
+
+        /* ============================================
+            MATHJAX CUSTOM STYLING
+            ============================================ */
+        mjx-container {
+            display: inline-block;
+            margin: 0 2px;
+        }
+        mjx-container[display="true"] {
+            display: block;
+            margin: 12px auto;
+            text-align: center;
+            overflow-x: auto;
+            overflow-y: hidden;
+            max-width: 100%;
+        }
+        /* Ensure MathJax doesn't break on small screens */
+        .math-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 4px 0;
+            max-width: 100%;
+        }
+
+        /* ============================================
+            CONTAINER & LAYOUT
+            ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--background-light);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        /* ============================================
+            HEADER SECTION
+            ============================================ */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: clamp(25px, 6vw, 40px) clamp(20px, 5vw, 30px);
+            text-align: center;
+        }
+        .header h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .header .subtitle {
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+        .learning-objectives {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+            max-width: min(800px, 90vw);
+        }
+        .learning-objectives h3 { margin-bottom: 10px; font-size: 1.2rem; }
+        .learning-objectives ul { list-style: none; padding-left: 0; }
+        .learning-objectives li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+        .learning-objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        /* ============================================
+            CONTENT SECTIONS
+            ============================================ */
+        .content { padding: clamp(20px, 5vw, 30px); }
+        .section {
+            background: var(--background-card);
+            border-radius: 15px;
+            padding: clamp(20px, 5vw, 30px);
+            margin-bottom: clamp(20px, 5vw, 30px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .section h2 {
+            color: var(--primary-color);
+            font-size: clamp(1.6rem, 4.5vw, 2rem);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        .section h3 {
+            color: var(--operation-color);
+            font-size: clamp(1.3rem, 4vw, 1.5rem);
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* ============================================
+            CONCRETE STAGE - REAL WORLD
+            ============================================ */
+        .real-world-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid var(--warning-color);
+        }
+        .real-world-box h4 {
+            color: #d63031;
+            font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+            margin-bottom: 15px;
+        }
+
+        /* ============================================
+            VISUAL STAGE - DIAGRAMS
+            ============================================ */
+        .visual-diagram {
+            background: #f0f9ff;
+            border: 2px solid var(--info-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .diagram-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        .diagram-step {
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            min-width: 200px;
+            flex: 1 1 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .diagram-step h4 { font-size: 1.1rem; margin-bottom: 8px; }
+        .diagram-step p { font-size: 0.95rem; }
+        .diagram-arrow {
+            font-size: 2rem;
+            color: var(--operation-color);
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+            FORMULA DISPLAY BOXES
+            ============================================ */
+        .formula-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 3px solid var(--primary-color);
+            border-radius: 15px;
+            padding: clamp(20px, 5vw, 30px);
+            margin: 25px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .formula-box .main-formula {
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            color: var(--primary-color);
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .formula-explanation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .formula-term {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--input-color);
+        }
+        .formula-term .symbol {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* ============================================
+            INTERACTIVE SOLVER
+            ============================================ */
+        .solver-container {
+            background: white;
+            border-radius: 15px;
+            padding: clamp(20px, 5vw, 30px);
+            margin: 20px 0;
+            border: 2px solid var(--primary-color);
+        }
+        .problem-display {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: clamp(15px, 4vw, 25px);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary-color);
+            overflow-x: auto;
+        }
+        .problem-display .equation {
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            color: var(--primary-color);
+            text-align: center;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .step-container {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: clamp(15px, 4vw, 25px);
+            margin: 20px 0;
+            border: 2px solid var(--border-color);
+            display: none;
+        }
+        .step-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .step-instruction {
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            color: var(--text-dark);
+            margin: 15px 0;
+            padding: 15px;
+            background: var(--highlight-color);
+            border-radius: 8px;
+            border-left: 4px solid var(--warning-color);
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        .input-group label {
+            font-size: 1.1rem;
+            margin: 0 5px;
+            white-space: nowrap;
+        }
+        .input-group input {
+            flex-grow: 1;
+            min-width: 120px;
+            max-width: 300px;
+            padding: 14px;
+            font-size: 1.1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            transition: all 0.3s;
+            line-height: normal;
+        }
+        #inputMu { max-width: 120px !important; }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .input-group input.correct {
+            border-color: var(--secondary-color);
+            background: #dcfce7;
+        }
+        .input-group input.incorrect {
+            border-color: var(--danger-color);
+            background: #fee2e2;
+        }
+
+        /* Guide Box */
+        .guide-box {
+            background: var(--guide-background);
+            border-left: 5px solid var(--info-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+            animation: slideIn 0.3s;
+            text-align: left;
+        }
+        .guide-box code {
+            background-color: rgba(0,0,0,0.05);
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        .guide-box.show { display: block; }
+        .guide-box h4 { color: var(--info-color); margin-bottom: 10px; }
+        .guide-box p { margin: 8px 0; }
+
+        /* ============================================
+            BUTTONS
+            ============================================ */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn:active { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-success { background: var(--secondary-color); color: white; }
+        .btn-warning { background: var(--info-color); color: white; }
+        .btn-warning:hover { background: #0891b2; }
+        .btn-secondary { background: var(--text-medium); color: white; }
+        .btn:disabled {
+            background: #d1d5db;
+            color: #6b7280;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ============================================
+            FEEDBACK
+            ============================================ */
+        .feedback {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+            animation: slideIn 0.3s;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .feedback.show { display: block; }
+        .feedback-success { background: #dcfce7; border-left: 5px solid var(--secondary-color); color: #065f46; }
+        .feedback-error { background: #fee2e2; border-left: 5px solid var(--danger-color); color: #991b1b; }
+        .feedback-info { background: #dbeafe; border-left: 5px solid var(--info-color); color: #075985; }
+
+        /* ============================================
+            PROGRESS BAR
+            ============================================ */
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 30px 0;
+            padding: 0 5px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            min-width: 80px;
+            padding: 0 5px;
+        }
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 100%;
+            height: 3px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+        .progress-step:first-child::after { left: 50%; width: 50%; }
+        .progress-step:last-child::after { display: none; }
+        .progress-step:not(:first-child):not(:last-child)::after { left: 0; width: 100%; }
+        .progress-step.completed:not(:last-child)::after { background: var(--secondary-color); }
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+            z-index: 2;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .progress-step.completed .progress-circle { background: var(--secondary-color); }
+        .progress-step.active .progress-circle {
+            background: var(--primary-color);
+            transform: scale(1.15);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+        .progress-label {
+            font-size: clamp(0.75rem, 2vw, 0.85rem);
+            color: var(--text-medium);
+            text-align: center;
+            margin-top: 5px;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        /* ============================================
+            EXAMPLES
+            ============================================ */
+        .example-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: clamp(15px, 4vw, 25px);
+            margin: 20px 0;
+            border: 2px solid var(--info-color);
+        }
+        .example-split {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        @media (min-width: 768px) {
+            .example-split { grid-template-columns: 1fr 1fr; }
+        }
+        .example-column {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+        .example-column h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        .example-step {
+            margin: 15px 0;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+            border-left: 3px solid var(--operation-color);
+        }
+        .example-equation {
+            font-size: 1rem;
+            margin: 10px 0;
+            color: var(--primary-color);
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* ============================================
+            PRACTICE
+            ============================================ */
+        .practice-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .difficulty-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--primary-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex-grow: 1;
+            max-width: 150px;
+        }
+        .difficulty-btn.active { background: var(--primary-color); color: white; }
+        .score-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+            font-weight: bold;
+        }
+        #practiceSolution {
+            text-align: left;
+            overflow-x: auto;
+        }
+
+        /* ============================================
+            TIPS & MISTAKES
+            ============================================ */
+        .tips-box, .mistakes-box {
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+        .tips-box { background: #dcfce7; border-left: 5px solid var(--secondary-color); }
+        .mistakes-box { background: #fee2e2; border-left: 5px solid var(--danger-color); }
+        .tips-box h4, .mistakes-box h4 { margin-bottom: 15px; font-size: 1.2rem; }
+        .tips-box h4 { color: var(--secondary-color); }
+        .mistakes-box h4 { color: var(--danger-color); }
+        .tips-box ul, .mistakes-box ul { list-style: none; padding-left: 0; }
+        .tips-box li, .mistakes-box li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .tips-box li:before { content: "💡"; position: absolute; left: 0; top: 8px; }
+        .mistakes-box li:before { content: "⚠️"; position: absolute; left: 0; top: 8px; }
+
+        /* ============================================
+            COLLAPSIBLE
+            ============================================ */
+        .collapsible {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            margin: 10px 0;
+            font-family: inherit;
+        }
+        .collapsible:hover { background: #2563eb; }
+        .collapsible::after {
+            content: '+';
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .collapsible.active::after { content: '−'; transform: rotate(180deg); }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background: white;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            margin-top: -5px;
+            position: relative;
+            z-index: 5;
+        }
+        .collapsible-content.show {
+            max-height: 3000px;
+            transition: max-height 0.5s ease-in;
+        }
+        .collapsible-inner {
+            padding: 20px;
+            font-size: 0.95rem;
+        }
+        .collapsible-inner h3 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* ============================================
+            RESPONSIVE
+            ============================================ */
+        @media (max-width: 768px) {
+            .content { padding: 15px; }
+            .section { padding: 20px; margin-bottom: 20px; }
+            .diagram-content { flex-direction: column; }
+            .diagram-arrow { transform: rotate(90deg); margin: 5px 0; }
+            .input-group { flex-direction: column; align-items: stretch; }
+            .input-group input { max-width: 100%; }
+            .button-group { flex-direction: column; }
+            .btn { width: 100%; }
+            .difficulty-btn { max-width: 100%; }
+        }
+
+        /* Utility classes */
+        .color-mu-text { color: var(--mu-color); font-weight: bold; }
+        .color-p-text { color: var(--operation-color); font-weight: bold; }
+        .color-q-text { color: var(--result-color); font-weight: bold; }
+
+        /* Loading placeholder */
+        .math-loading {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            color: #9ca3af;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+        HEADER
+        ============================================ -->
+    <div class="container">
+        <div class="header">
+            <h1>🎓 First Order Differential Equation</h1>
+            <p class="subtitle">Integrating Factor Method - Pembelajaran Interaktif</p>
+
+            <div class="learning-objectives">
+                <h3>📌 Objektif Pembelajaran:</h3>
+                <ul>
+                    <li>Memahami konsep first order linear differential equation</li>
+                    <li>Mengenal pasti standard form persamaan</li>
+                    <li>Mengira integrating factor \(\mu(x)\)</li>
+                    <li>Menyelesaikan persamaan menggunakan integrating factor method</li>
+                    <li>Mengaplikasikan initial condition untuk mencari particular solution</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- ============================================
+                SECTION 1: CONCRETE STAGE - REAL WORLD
+                ============================================ -->
+            <div class="section">
+                <h2>🌍 Kenapa Kita Belajar Ini?</h2>
+
+                <div class="real-world-box">
+                    <h4>Contoh Dalam Kehidupan Sebenar:</h4>
+                    <p><strong>1. Temperature Decay (Penurunan Suhu):</strong></p>
+                    <p>Bayangkan anda meletakkan segelas kopi panas dalam bilik yang sejuk. Suhu kopi akan turun mengikut masa. Perubahan suhu ini boleh diwakili oleh first order differential equation!</p>
+                    <p style="margin-top: 15px;"><strong>Persamaan:</strong></p>
+                    <div class="math-scroll">
+                        \[ \frac{dT}{dt} + k(T - T_{\text{room}}) = 0 \]
+                    </div>
+
+                    <p style="margin-top: 20px;"><strong>2. Mixing Problems (Masalah Pencampuran):</strong></p>
+                    <p>Dalam industri, kita perlu tahu berapa banyak bahan kimia dalam tangki apabila air masuk dan keluar. First order differential equation membantu kita mengira ini!</p>
+
+                    <p style="margin-top: 20px;"><strong>3. Circuit Analysis (Analisis Litar Elektrik):</strong></p>
+                    <p>Dalam litar RL atau RC, arus atau voltan berubah mengikut masa dan boleh diselesaikan menggunakan integrating factor method.</p>
+                </div>
+
+                <div class="visual-diagram">
+                    <h3>📊 Konsep Asas</h3>
+                    <p><strong>First Order Differential Equation</strong> bermaksud persamaan yang melibatkan:</p>
+                    <div class="diagram-content">
+                        <div class="diagram-step">
+                            <h4>Kadar Perubahan</h4>
+                            <p>\(\dfrac{dy}{dx}\)</p>
+                            <p style="margin-top:8px;">Berapa cepat y berubah</p>
+                        </div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-step">
+                            <h4>Fungsi y</h4>
+                            <p style="font-size: 1.5rem; color: var(--operation-color);">\(y\)</p>
+                            <p style="margin-top:8px;">Nilai yang kita cari</p>
+                        </div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-step">
+                            <h4>Fungsi Lain</h4>
+                            <p style="font-size: 1.5rem; color: var(--result-color);">\(f(x)\)</p>
+                            <p style="margin-top:8px;">Fungsi yang melibatkan x</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                SECTION 2: VISUAL-SYMBOL STAGE - FORMULA
+                ============================================ -->
+            <div class="section">
+                <h2>📐 Standard Form & Formula</h2>
+
+                <div class="formula-box">
+                    <h3>Standard Form:</h3>
+                    <div class="main-formula">
+                        \[ \frac{dy}{dx} + \textcolor{#f97316}{P(x)}\,y = \textcolor{#10b981}{Q(x)} \]
+                    </div>
+
+                    <div class="formula-explanation">
+                        <div class="formula-term">
+                            <span class="symbol">\(\dfrac{dy}{dx}\)</span>
+                            <p>Derivative pertama y terhadap x (kadar perubahan)</p>
+                        </div>
+                        <div class="formula-term">
+                            <span class="symbol color-p-text">\(P(x)\)</span>
+                            <p>Fungsi dalam sebutan x (coefficient y)</p>
+                        </div>
+                        <div class="formula-term">
+                            <span class="symbol">\(y\)</span>
+                            <p>Pembolehubah bersandar (dependent variable)</p>
+                        </div>
+                        <div class="formula-term">
+                            <span class="symbol color-q-text">\(Q(x)\)</span>
+                            <p>Fungsi bebas (independent function)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="formula-box" style="background: linear-gradient(135deg, #fef3c7 0%, #fde047 100%); border-color: var(--warning-color);">
+                    <h3>Integrating Factor \(\mu(x)\):</h3>
+                    <div class="main-formula">
+                        \[ \textcolor{#f59e0b}{\mu(x)} = e^{\int \textcolor{#f97316}{P(x)}\,dx} \]
+                    </div>
+                    <p style="margin-top: 15px; font-size: 1.1rem;">
+                        Integrating factor adalah "magic multiplier" yang membantu kita selesaikan persamaan!
+                    </p>
+                </div>
+
+                <div class="formula-box" style="background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%); border-color: var(--secondary-color);">
+                    <h3>General Solution:</h3>
+                    <div class="main-formula">
+                        \[ y \cdot \textcolor{#f59e0b}{\mu(x)} = \int \textcolor{#f59e0b}{\mu(x)} \cdot \textcolor{#10b981}{Q(x)}\,dx + C \]
+                    </div>
+                    <p style="margin-top: 15px; font-size: 1.1rem;">
+                        Atau:
+                    </p>
+                    <div class="main-formula">
+                        \[ y = \frac{\int \textcolor{#f59e0b}{\mu(x)} \cdot \textcolor{#10b981}{Q(x)}\,dx + C}{\textcolor{#f59e0b}{\mu(x)}} \]
+                    </div>
+                </div>
+
+                <div class="visual-diagram">
+                    <h3>🎯 Langkah-Langkah Penyelesaian</h3>
+                    <div class="diagram-content" style="flex-direction: column;">
+                        <div class="diagram-step" style="width: 95%; max-width: 700px;">
+                            <h4>Step 1: Tukar ke Standard Form</h4>
+                            <div class="math-scroll">\[ \frac{dy}{dx} + \textcolor{#f97316}{P(x)}\,y = \textcolor{#10b981}{Q(x)} \]</div>
+                        </div>
+                        <div class="diagram-arrow" style="transform: rotate(90deg); margin: 10px 0;">↓</div>
+                        <div class="diagram-step" style="width: 95%; max-width: 700px;">
+                            <h4>Step 2: Cari Integrating Factor</h4>
+                            <div class="math-scroll">\[ \textcolor{#f59e0b}{\mu(x)} = e^{\int \textcolor{#f97316}{P(x)}\,dx} \]</div>
+                        </div>
+                        <div class="diagram-arrow" style="transform: rotate(90deg); margin: 10px 0;">↓</div>
+                        <div class="diagram-step" style="width: 95%; max-width: 700px;">
+                            <h4>Step 3: Darab Kedua-dua Belah</h4>
+                            <div class="math-scroll">\[ \textcolor{#f59e0b}{\mu(x)}\frac{dy}{dx} + \textcolor{#f59e0b}{\mu(x)}\textcolor{#f97316}{P(x)}\,y = \textcolor{#f59e0b}{\mu(x)}\textcolor{#10b981}{Q(x)} \]</div>
+                            <p style="font-size: 0.9em; margin-top: 5px;">Left side becomes \(\dfrac{d}{dx}\!\left(y \cdot \textcolor{#f59e0b}{\mu(x)}\right)\)</p>
+                        </div>
+                        <div class="diagram-arrow" style="transform: rotate(90deg); margin: 10px 0;">↓</div>
+                        <div class="diagram-step" style="width: 95%; max-width: 700px;">
+                            <h4>Step 4: Integrate Kedua-dua Belah</h4>
+                            <div class="math-scroll">\[ y \cdot \textcolor{#f59e0b}{\mu(x)} = \int \textcolor{#f59e0b}{\mu(x)} \cdot \textcolor{#10b981}{Q(x)}\,dx + C \]</div>
+                        </div>
+                        <div class="diagram-arrow" style="transform: rotate(90deg); margin: 10px 0;">↓</div>
+                        <div class="diagram-step" style="width: 95%; max-width: 700px;">
+                            <h4>Step 5: Selesaikan untuk y</h4>
+                            <div class="math-scroll">\[ y = \frac{\int \textcolor{#f59e0b}{\mu(x)} \cdot \textcolor{#10b981}{Q(x)}\,dx + C}{\textcolor{#f59e0b}{\mu(x)}} \]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ============================================
+                SECTION 3: INTERACTIVE STEP-BY-STEP SOLVER
+                ============================================ -->
+            <div class="section">
+                <h2>🎮 Cuba Sendiri - Step by Step!</h2>
+
+                <div style="background: #dbeafe; border-left: 5px solid var(--info-color); border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                    <h4 style="color: var(--info-color); margin-bottom: 10px;">ℹ️ Format Jawapan yang Diterima:</h4>
+                    <ul style="list-style: none; padding-left: 0; font-size: 0.95rem;">
+                        <li style="padding: 5px 0;">• Boleh guna <strong>^</strong> untuk exponent: <code>e^(2x)</code> atau <code>e^2x</code> <strong>(kurung optional!)</strong></li>
+                        <li style="padding: 5px 0;">• Boleh guna atau tidak guna <strong>*</strong> untuk multiply: <code>2x</code> atau <code>2*x</code></li>
+                        <li style="padding: 5px 0;">• Boleh guna kurung atau tidak: <code>e^(-2x)</code> atau <code>e^-2x</code></li>
+                        <li style="padding: 5px 0;">• Contoh: <code>2xe^2x-e^2x</code> atau <code>2xe^(2x)-e^(2x)</code> - semua OK!</li>
+                    </ul>
+                </div>
+
+                <div class="problem-display">
+                    <h3>Soalan:</h3>
+                    <div class="equation" id="currentProblem">
+                        <!-- Set by JS using MathJax -->
+                        <span class="math-loading">Loading equation...</span>
+                    </div>
+                    <p style="text-align: center; margin-top: 10px; font-style: italic;" id="currentProblemIC">
+                        Initial condition: y(0) = 1
+                    </p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-step active" data-step="1">
+                        <div class="progress-circle">1</div>
+                        <div class="progress-label">Standard Form</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="progress-circle">2</div>
+                        <div class="progress-label">P(x) & Q(x)</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="progress-circle">3</div>
+                        <div class="progress-label">Integrating Factor</div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="progress-circle">4</div>
+                        <div class="progress-label">Integrate</div>
+                    </div>
+                    <div class="progress-step" data-step="5">
+                        <div class="progress-circle">5</div>
+                        <div class="progress-label">Solve y</div>
+                    </div>
+                    <div class="progress-step" data-step="6">
+                        <div class="progress-circle">6</div>
+                        <div class="progress-label">Apply IC</div>
+                    </div>
+                </div>
+
+                <div class="solver-container">
+
+                    <!-- STEP 1: Verify Standard Form -->
+                    <div class="step-container active" id="step1">
+                        <div class="step-header">
+                            <div class="step-number">Step 1</div>
+                        </div>
+                        <div class="step-instruction">
+                            Semak sama ada persamaan sudah dalam standard form:
+                            <div class="math-scroll" style="text-align:center; margin-top:8px;">
+                                \[ \frac{dy}{dx} + \textcolor{#f97316}{P(x)}\,y = \textcolor{#10b981}{Q(x)} \]
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div class="math-scroll" id="step1EquationDisplay">
+                                <!-- Eq set by JS -->
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-success" onclick="checkStep1('yes')">Ya, sudah standard form</button>
+                            <button class="btn btn-secondary" onclick="checkStep1('no')">Tidak, perlu tukar</button>
+                        </div>
+                        <div id="feedback1" class="feedback"></div>
+                        <div class="guide-box" id="guide1"></div>
+                    </div>
+
+                    <!-- STEP 2: Identify P(x) and Q(x) -->
+                    <div class="step-container" id="step2">
+                        <div class="step-header">
+                            <div class="step-number">Step 2</div>
+                        </div>
+                        <div class="step-instruction">
+                            Kenal pasti <strong class="color-p-text">P(x)</strong> dan <strong class="color-q-text">Q(x)</strong> dari persamaan standard form.
+                        </div>
+
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div class="math-scroll" id="step2EquationDisplay">
+                                <!-- Eq set by JS -->
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label><span class="color-p-text">P(x)</span> =</label>
+                            <input type="text" id="inputPx" placeholder="Coefficient y">
+                        </div>
+
+                        <div class="input-group">
+                            <label><span class="color-q-text">Q(x)</span> =</label>
+                            <input type="text" id="inputQx" placeholder="Right-hand side">
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="checkStep2()">Semak Jawapan</button>
+                            <button class="btn btn-warning" onclick="toggleGuide(2, this)">📚 Tunjuk Guide</button>
+                        </div>
+                        <div id="feedback2" class="feedback"></div>
+                        <div class="guide-box" id="guide2"></div>
+                    </div>
+
+                    <!-- STEP 3: Calculate Integrating Factor -->
+                    <div class="step-container" id="step3">
+                        <div class="step-header">
+                            <div class="step-number">Step 3</div>
+                        </div>
+                        <div class="step-instruction">
+                            Kira integrating factor <span class="color-mu-text">μ(x)</span> menggunakan formula:
+                            <div class="math-scroll" style="text-align:center; margin-top:8px;">
+                                \[ \textcolor{#f59e0b}{\mu(x)} = e^{\int \textcolor{#f97316}{P(x)}\,dx} \]
+                            </div>
+                        </div>
+
+                        <div style="margin: 20px 0; text-align:center;">
+                            <div class="math-scroll" id="step3IntegralDisplay">
+                                <!-- Display of ∫P(x)dx = ∫(P)dx = set by JS -->
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Hasil integral \(\int \textcolor{#f97316}{P(x)}\,dx\) =</label>
+                            <input type="text" id="inputIntegral" placeholder="Contoh: 2x">
+                        </div>
+
+                        <div class="input-group">
+                            <label>\(\textcolor{#f59e0b}{\mu(x)} = e^{\square}\), Exponent =</label>
+                            <input type="text" id="inputMu" placeholder="Exponent">
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="checkStep3()">Semak Jawapan</button>
+                            <button class="btn btn-warning" onclick="toggleGuide(3, this)">📚 Tunjuk Guide</button>
+                        </div>
+                        <div id="feedback3" class="feedback"></div>
+                        <div class="guide-box" id="guide3"></div>
+                    </div>
+
+                    <!-- STEP 4: Integrate Both Sides -->
+                    <div class="step-container" id="step4">
+                        <div class="step-header">
+                            <div class="step-number">Step 4</div>
+                        </div>
+                        <div class="step-instruction">
+                            Gunakan formula general solution dan selesaikan integral di sebelah kanan:
+                            <div class="math-scroll" style="text-align:center; margin-top:8px;">
+                                \[ y \cdot \textcolor{#f59e0b}{\mu(x)} = \int \textcolor{#f59e0b}{\mu(x)} \cdot \textcolor{#10b981}{Q(x)}\,dx + C \]
+                            </div>
+                        </div>
+
+                        <div style="background: #f0f9ff; padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
+                            <div class="math-scroll" id="step4IntegralEq">
+                                <!-- Set by JS -->
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div id="step4IntegralLabel" class="math-scroll" style="display:inline-block;">
+                                <!-- Set by JS -->
+                            </div>
+                            <input type="text" id="inputIntegration" placeholder="Hasil integral (guna by parts)" style="width: 300px;">
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="checkStep4()">Semak Jawapan</button>
+                            <button class="btn btn-warning" onclick="toggleGuide(4, this)">📚 Tunjuk Guide</button>
+                        </div>
+                        <div id="feedback4" class="feedback"></div>
+                        <div class="guide-box" id="guide4"></div>
+                    </div>
+
+                    <!-- STEP 5: Solve for y -->
+                    <div class="step-container" id="step5">
+                        <div class="step-header">
+                            <div class="step-number">Step 5</div>
+                        </div>
+                        <div class="step-instruction">
+                            Masukkan hasil integral ke dalam persamaan dan selesaikan untuk <strong>y</strong> (General Solution).
+                        </div>
+
+                        <div style="background: #f0f9ff; padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
+                            <div class="math-scroll" id="step5GenSolEq">
+                                <!-- Set by JS -->
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>y =</label>
+                            <input type="text" id="inputY" placeholder="General solution" style="width: 250px;">
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="checkStep5()">Semak Jawapan</button>
+                            <button class="btn btn-warning" onclick="toggleGuide(5, this)">📚 Tunjuk Guide</button>
+                        </div>
+                        <div id="feedback5" class="feedback"></div>
+                        <div class="guide-box" id="guide5"></div>
+                    </div>
+
+                    <!-- STEP 6: Apply Initial Condition -->
+                    <div class="step-container" id="step6">
+                        <div class="step-header">
+                            <div class="step-number">Step 6</div>
+                        </div>
+                        <div class="step-instruction">
+                            Gunakan initial condition <strong id="step6IC">y(0) = 1</strong> untuk mencari nilai constant <strong>C</strong>, dan tuliskan <strong>Particular Solution</strong>.
+                        </div>
+
+                        <div class="input-group">
+                            <label>Nilai C =</label>
+                            <input type="text" id="inputC" placeholder="Constant C">
+                        </div>
+
+                        <div class="input-group" style="margin-top: 20px;">
+                            <label>Particular solution, y =</label>
+                            <input type="text" id="inputParticular" placeholder="Final solution" style="width: 250px;">
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="checkStep6()">Semak Jawapan</button>
+                            <button class="btn btn-warning" onclick="toggleGuide(6, this)">📚 Tunjuk Guide</button>
+                        </div>
+                        <div id="feedback6" class="feedback"></div>
+                        <div class="guide-box" id="guide6"></div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="button-group" style="margin-top: 30px;">
+                        <button class="btn btn-secondary" id="prevBtn" onclick="previousStep()" disabled>⬅ Step Sebelum</button>
+                        <button class="btn btn-secondary" onclick="resetSolver()">🔄 Mula Semula</button>
+                        <button class="btn btn-success" onclick="generateNewProblem()">✨ Soalan Baru</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ============================================
+                SECTION 4: WORKED EXAMPLES
+                ============================================ -->
+            <div class="section">
+                <h2>📚 Contoh Lengkap</h2>
+
+                <div class="example-container">
+                    <h3>Contoh 1: \(\dfrac{dy}{dx} + \textcolor{#f97316}{3}\,y = \textcolor{#10b981}{6e^{2x}}\), \(y(0) = 2\)</h3>
+
+                    <div class="example-split">
+                        <div class="example-column">
+                            <h4>Penyelesaian Step-by-Step</h4>
+
+                            <div class="example-step">
+                                <strong>Step 1:</strong> Kenal pasti P(x) dan Q(x)
+                                <div class="example-equation math-scroll">
+                                    \[ \textcolor{#f97316}{P(x) = 3}, \quad \textcolor{#10b981}{Q(x) = 6e^{2x}} \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 2:</strong> Kira integrating factor
+                                <div class="example-equation math-scroll">
+                                    \[ \textcolor{#f59e0b}{\mu(x)} = e^{\int \textcolor{#f97316}{3}\,dx} = \textcolor{#f59e0b}{e^{3x}} \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 3:</strong> Darab dengan \(\mu(x)\)
+                                <div class="example-equation math-scroll">
+                                    \[ \textcolor{#f59e0b}{e^{3x}}\frac{dy}{dx} + 3\textcolor{#f59e0b}{e^{3x}}y = \textcolor{#10b981}{6e^{2x}} \cdot \textcolor{#f59e0b}{e^{3x}} \]
+                                </div>
+                                <div class="example-equation math-scroll">
+                                    \[ \frac{d}{dx}\!\left(y\,\textcolor{#f59e0b}{e^{3x}}\right) = 6e^{5x} \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 4:</strong> Integrate
+                                <div class="example-equation math-scroll">
+                                    \[ y\,\textcolor{#f59e0b}{e^{3x}} = \int 6e^{5x}\,dx = \frac{6}{5}e^{5x} + C \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 5:</strong> Solve untuk y
+                                <div class="example-equation math-scroll">
+                                    \[ y = \frac{\frac{6}{5}e^{5x} + C}{\textcolor{#f59e0b}{e^{3x}}} = \frac{6}{5}e^{2x} + C\textcolor{#f59e0b}{e^{-3x}} \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 6:</strong> Apply \(y(0) = 2\)
+                                <div class="example-equation math-scroll">
+                                    \[ 2 = \frac{6}{5}e^{0} + Ce^{0} = \frac{6}{5} + C \]
+                                </div>
+                                <div class="example-equation math-scroll">
+                                    \[ C = 2 - \frac{6}{5} = \frac{4}{5} \]
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-column">
+                            <h4>Penjelasan Visual & Jawapan Akhir</h4>
+
+                            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <strong>Kenapa \(\textcolor{#f59e0b}{e^{3x}}\)?</strong>
+                                <p>Kerana \(P(x) = 3\), dan \(\int 3\,dx = 3x\)</p>
+                            </div>
+
+                            <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <strong>Integration Rule:</strong>
+                                <div class="math-scroll">\[ \int e^{ax}\,dx = \frac{1}{a}e^{ax} + C \]</div>
+                                <div class="math-scroll">\[ \int 6e^{5x}\,dx = \frac{6}{5}e^{5x} \]</div>
+                            </div>
+
+                            <div style="background: #dcfce7; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <strong>Simplifying:</strong>
+                                <p>Exponent rule: \(\dfrac{e^{a}}{e^{b}} = e^{a-b}\)</p>
+                                <div class="math-scroll">\[ \frac{e^{5x}}{\textcolor{#f59e0b}{e^{3x}}} = e^{2x} \]</div>
+                            </div>
+
+                            <div style="background: #fee2e2; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <strong>Final Answer:</strong>
+                                <div class="math-scroll" style="font-size: 1.1rem; color: var(--primary-color); font-weight: bold;">
+                                    \[ y = \frac{6}{5}e^{2x} + \frac{4}{5}\textcolor{#f59e0b}{e^{-3x}} \]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-container">
+                    <h3>Contoh 2: \(xy' + \textcolor{#f97316}{2}\,y = \textcolor{#10b981}{4x^{2}}\), \(y(1) = 3\)</h3>
+
+                    <div class="example-split">
+                        <div class="example-column">
+                            <h4>Penyelesaian Step-by-Step</h4>
+
+                            <div class="example-step">
+                                <strong>Step 1:</strong> Tukar ke standard form (Bahagi dgn x)
+                                <div class="example-equation math-scroll">
+                                    \[ y' + \textcolor{#f97316}{\frac{2}{x}}\,y = \textcolor{#10b981}{4x} \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 2:</strong> Kenal pasti P(x) dan Q(x)
+                                <div class="example-equation math-scroll">
+                                    \[ \textcolor{#f97316}{P(x) = \frac{2}{x}}, \quad \textcolor{#10b981}{Q(x) = 4x} \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 3:</strong> Kira integrating factor
+                                <div class="example-equation math-scroll">
+                                    \[ \textcolor{#f59e0b}{\mu(x)} = e^{\int \frac{2}{x}\,dx} = e^{2\ln|x|} = e^{\ln(x^{2})} = \textcolor{#f59e0b}{x^{2}} \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 4:</strong> Darab dan integrate
+                                <div class="example-equation math-scroll">
+                                    \[ \frac{d}{dx}\!\left(y \cdot \textcolor{#f59e0b}{x^{2}}\right) = \textcolor{#f59e0b}{x^{2}} \cdot \textcolor{#10b981}{4x} = 4x^{3} \]
+                                </div>
+                                <div class="example-equation math-scroll">
+                                    \[ y\,\textcolor{#f59e0b}{x^{2}} = \int 4x^{3}\,dx = x^{4} + C \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 5:</strong> Solve untuk y
+                                <div class="example-equation math-scroll">
+                                    \[ y = \frac{x^{4} + C}{\textcolor{#f59e0b}{x^{2}}} = x^{2} + \frac{C}{\textcolor{#f59e0b}{x^{2}}} \]
+                                </div>
+                            </div>
+
+                            <div class="example-step">
+                                <strong>Step 6:</strong> Apply \(y(1) = 3\)
+                                <div class="example-equation math-scroll">
+                                    \[ 3 = 1^{2} + \frac{C}{1^{2}} = 1 + C \implies C = 2 \]
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-column">
+                            <h4>Tips & Tricks & Jawapan Akhir</h4>
+
+                            <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <strong>💡 Tip:</strong>
+                                <p>Apabila \(P(x) = \dfrac{a}{x}\), integrating factor akan jadi \(x^{a}\)</p>
+                            </div>
+
+                            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <strong>Integration \(\mu(x)\):</strong>
+                                <div class="math-scroll">\[ \int \frac{2}{x}\,dx = 2\ln|x| \]</div>
+                                <div class="math-scroll">\[ e^{2\ln|x|} = e^{\ln(x^{2})} = \textcolor{#f59e0b}{x^{2}} \]</div>
+                            </div>
+
+                            <div style="background: #dcfce7; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                                <strong>Final Answer:</strong>
+                                <div class="math-scroll" style="font-size: 1.1rem; color: var(--primary-color); font-weight: bold;">
+                                    \[ y = x^{2} + \frac{2}{\textcolor{#f59e0b}{x^{2}}} \]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                SECTION 5: PRACTICE AREA
+                ============================================ -->
+            <div class="section">
+                <h2>🎯 Practice Zone</h2>
+
+                <p style="text-align: center; font-size: 1.1rem; margin-bottom: 20px;">
+                    Pilih tahap kesukaran dan cuba selesaikan masalah!
+                </p>
+
+                <div class="difficulty-selector">
+                    <button class="difficulty-btn active" onclick="setDifficulty('easy')">Mudah</button>
+                    <button class="difficulty-btn" onclick="setDifficulty('medium')">Sederhana</button>
+                    <button class="difficulty-btn" onclick="setDifficulty('hard')">Mencabar</button>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="color: white; margin-bottom: 15px;">🎲 Mula Sekarang!</h3>
+                    <button class="btn" onclick="generatePractice()" style="background: white; color: #059669; font-size: 1.1rem; padding: 15px 40px; font-weight: bold;">
+                        ✨ Generate Problem
+                    </button>
+                    <p style="color: white; margin-top: 10px; font-size: 0.9rem; opacity: 0.9;">Klik butang di atas untuk dapatkan soalan practice</p>
+                </div>
+
+                <div class="score-display">
+                    Score: <span id="scoreDisplay">0/0</span>
+                </div>
+
+                <div class="problem-display">
+                    <h3>Practice Problem:</h3>
+                    <div class="equation" id="practiceProblem">
+                        Tiada problem lagi. Generate problem dahulu! 👆
+                    </div>
+                    <p style="text-align: center; margin-top: 10px; font-style: italic;" id="practiceIC"></p>
+                </div>
+
+                <div style="background: white; border-radius: 10px; padding: 25px; margin: 20px 0; border: 2px solid var(--border-color);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px;">Your Solution:</h3>
+
+                    <div class="input-group">
+                        <label>Particular solution, y =</label>
+                        <input type="text" id="practiceAnswer" placeholder="Masukkan jawapan akhir anda" style="width: 300px;">
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="checkPractice()">Semak Jawapan</button>
+                        <button class="btn btn-warning" onclick="showPracticeSolution()">👁 Lihat Solution</button>
+                        <button class="btn btn-success" onclick="generatePractice()">✨ Generate Problem</button>
+                    </div>
+
+                    <div id="practiceFeedback" class="feedback"></div>
+
+                    <div id="practiceSolution" style="display: none; margin-top: 20px; padding: 20px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid var(--info-color);">
+                        <h4 style="color: var(--primary-color);">Solution:</h4>
+                        <div id="solutionSteps"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                SECTION 6: FORMULA REFERENCE
+                ============================================ -->
+            <div class="section">
+                <button class="collapsible" onclick="toggleCollapsible(this)">
+                    📖 Formula Reference Card
+                </button>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h3>Standard Forms & Formulas</h3>
+
+                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: var(--primary-color);">1. Standard Form</h4>
+                            <div class="math-scroll">
+                                \[ \frac{dy}{dx} + \textcolor{#f97316}{P(x)}\,y = \textcolor{#10b981}{Q(x)} \]
+                            </div>
+                        </div>
+
+                        <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: var(--operation-color);">2. Integrating Factor</h4>
+                            <div class="math-scroll">
+                                \[ \textcolor{#f59e0b}{\mu(x)} = e^{\int \textcolor{#f97316}{P(x)}\,dx} \]
+                            </div>
+                        </div>
+
+                        <div style="background: #dcfce7; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: var(--secondary-color);">3. General Solution</h4>
+                            <div class="math-scroll">
+                                \[ y \cdot \textcolor{#f59e0b}{\mu(x)} = \int \textcolor{#f59e0b}{\mu(x)} \cdot \textcolor{#10b981}{Q(x)}\,dx + C \]
+                            </div>
+                            <p style="margin-top: 8px;">atau:</p>
+                            <div class="math-scroll">
+                                \[ y = \frac{\int \textcolor{#f59e0b}{\mu(x)} \cdot \textcolor{#10b981}{Q(x)}\,dx + C}{\textcolor{#f59e0b}{\mu(x)}} \]
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 30px;">Common Integration Formulas</h3>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin: 20px 0;">
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border-color);">
+                                <div class="math-scroll">\[ \int e^{ax}\,dx = \frac{1}{a}e^{ax} + C \]</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border-color);">
+                                <div class="math-scroll">\[ \int x^{n}\,dx = \frac{x^{n+1}}{n+1} + C \]</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border-color);">
+                                <div class="math-scroll">\[ \int \frac{1}{x}\,dx = \ln|x| + C \]</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border-color);">
+                                <div class="math-scroll">\[ \int \cos(x)\,dx = \sin(x) + C \]</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border-color);">
+                                <div class="math-scroll">\[ \int \sin(x)\,dx = -\cos(x) + C \]</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border-color);">
+                                <div class="math-scroll">\[ \int \sec^{2}(x)\,dx = \tan(x) + C \]</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border-color);">
+                                <div class="math-scroll">\[ \int \tan(x)\,dx = \ln|\sec(x)| + C \]</div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border-color);">
+                                <div class="math-scroll">\[ \int u\,dv = uv - \int v\,du \]</div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top: 30px;">Exponent Rules</h3>
+
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <div class="math-scroll">\[ e^{a} \cdot e^{b} = e^{a+b} \]</div>
+                            <div class="math-scroll">\[ \frac{e^{a}}{e^{b}} = e^{a-b} \]</div>
+                            <div class="math-scroll">\[ \left(e^{a}\right)^{b} = e^{ab} \]</div>
+                            <div class="math-scroll">\[ e^{\ln(x)} = x \]</div>
+                            <div class="math-scroll">\[ e^{a\ln(x)} = x^{a} \]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================
+                SECTION 7: TIPS & COMMON MISTAKES
+                ============================================ -->
+            <div class="section">
+                <h2>💡 Tips & Common Mistakes</h2>
+
+                <div class="tips-box">
+                    <h4>💡 Tips untuk Ingat:</h4>
+                    <ul>
+                        <li><strong>Standard Form Dahulu:</strong> Sentiasa tukar equation ke form \(\frac{dy}{dx} + P(x)y = Q(x)\) sebelum mulakan. Bahagi dengan coefficient \(y'\) jika perlu!</li>
+                        <li><strong>Jangan Lupa "+C":</strong> Bila integrate, jangan lupa constant of integration C. Tapi bila kira \(\mu(x)\), kita tak perlu +C kerana ia akan cancel out.</li>
+                        <li><strong>Simplify Step by Step:</strong> Jangan rush! Simplify setiap step dengan teliti. Banyak kesilapan datang dari algebra yang tergesa-gesa.</li>
+                        <li><strong>Check Initial Condition:</strong> Pastikan substitute IC dengan betul untuk cari C. Double check calculation!</li>
+                        <li><strong>Integration by Parts:</strong> Bila Q(x) complicated (seperti \(xe^{x}\)), gunakan integration by parts: \(\int u\,dv = uv - \int v\,du\)</li>
+                    </ul>
+                </div>
+
+                <div class="mistakes-box">
+                    <h4>⚠️ Common Mistakes:</h4>
+                    <ul>
+                        <li><strong>Lupa Tukar ke Standard Form:</strong> Jangan terus cari P(x) tanpa standardkan equation dahulu. Coefficient \(y'\) mestilah 1!</li>
+                        <li><strong>Salah Integrate P(x):</strong> Bila \(P(x) = \frac{2}{x}\), ramai ter-integrate jadi \(\ln(x)\) instead of \(2\ln(x)\). Jangan lupa coefficient!</li>
+                        <li><strong>Simplify \(e^{\ln(x)}\) Salah:</strong> Remember: \(e^{\ln(x)} = x\), bukan \(\ln(x)\)!</li>
+                        <li><strong>Lupa Darab \(\mu(x)\) pada Q(x):</strong> After dapat \(\mu(x)\), mesti darab KEDUA-DUA belah equation, bukan hanya satu side sahaja!</li>
+                        <li><strong>Sign Errors:</strong> Berhati-hati dengan negative signs, terutama bila simplify fractions atau subtract terms.</li>
+                        <li><strong>Lupa Apply Initial Condition:</strong> General solution sahaja tak cukup! Mesti apply IC untuk particular solution jika soalan ada IC.</li>
+                    </ul>
+                </div>
+
+                <div style="background: #dbeafe; border-left: 5px solid var(--info-color); border-radius: 8px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: var(--info-color);">🎯 Pro Tips untuk Exam:</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="padding: 8px 0;">✓ Always show working clearly - marks untuk process, bukan jawapan sahaja!</li>
+                        <li style="padding: 8px 0;">✓ Write integration clearly dengan \(\int\) symbol dan \(dx\)</li>
+                        <li style="padding: 8px 0;">✓ Box your final answer</li>
+                        <li style="padding: 8px 0;">✓ If stuck on integration, try substitution atau by parts</li>
+                        <li style="padding: 8px 0;">✓ Verify answer dengan differentiate balik - it should satisfy original equation!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ============================================
+                SECTION 8: INSTRUCTIONS
+                ============================================ -->
+            <div class="section">
+                <button class="collapsible" onclick="toggleCollapsible(this)">
+                    📚 Cara Guna Aplikasi Ini
+                </button>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <h3>Panduan Lengkap</h3>
+
+                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: var(--primary-color);">1️⃣ Interactive Solver</h4>
+                            <p>• Cuba selesaikan problem step by step</p>
+                            <p>• Masukkan jawapan anda dalam input boxes</p>
+                            <p>• Klik "Semak Jawapan" untuk check</p>
+                            <p>• Guna butang "📚 Tunjuk Guide" jika perlukan bantuan</p>
+                            <p>• Progress bar tunjuk step mana anda sekarang</p>
+                        </div>
+
+                        <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: var(--operation-color);">2️⃣ Practice Zone</h4>
+                            <p>• Pilih difficulty level: Mudah, Sederhana, atau Mencabar</p>
+                            <p>• Klik "Generate Problem" untuk dapat soalan baru</p>
+                            <p>• Cuba selesaikan sendiri</p>
+                            <p>• Check jawapan dan lihat score anda</p>
+                            <p>• Klik "Lihat Solution" untuk tengok full working</p>
+                        </div>
+
+                        <div style="background: #dcfce7; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: var(--secondary-color);">3️⃣ Learning Tips</h4>
+                            <p>• Start dengan examples dahulu untuk understand concept</p>
+                            <p>• Practice dengan interactive solver untuk master technique</p>
+                            <p>• Buat notes dalam formula reference section</p>
+                            <p>• Baca tips & common mistakes untuk avoid errors</p>
+                            <p>• Practice banyak kali dengan different problems!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        // ============================================
+        // STATE & DATA
+        // ============================================
+        let currentStep = 1;
+        let currentDifficulty = 'easy';
+        let practiceScore = { correct: 0, total: 0 };
+        let currentPracticeProblem = null;
+
+        // Problem data for interactive solver.
+        // Each problem carries BOTH plain-text (for answer checking) and LaTeX (for display) variants.
+        const solverProblems = [
+            {
+                // Default problem
+                P: "2", Q: "4x",
+                P_latex: "2", Q_latex: "4x",
+                integral_P: "2x", integral_P_latex: "2x",
+                mu: "e^(2x)", mu_latex: "e^{2x}",
+                integration_result: "2xe^(2x)-e^(2x)",
+                integration_result_latex: "2xe^{2x} - e^{2x}",
+                general_solution: "2x-1+Ce^(-2x)",
+                general_solution_latex: "2x - 1 + Ce^{-2x}",
+                initial_x: "0", initial_y: "1", C: "2",
+                particular_solution: "2x-1+2e^(-2x)",
+                particular_solution_latex: "2x - 1 + 2e^{-2x}",
+                ic_string: "y(0) = 1",
+                needs_standard: false,
+                // Step 4 integration-by-parts worked steps
+                byParts: {
+                    u: "4x", du: "4\\,dx",
+                    dv: "e^{2x}\\,dx", v: "\\tfrac{1}{2}e^{2x}"
+                },
+                // Step 5 simplification
+                simplify_steps: [
+                    "\\frac{2xe^{2x}}{e^{2x}} = 2x",
+                    "\\frac{-e^{2x}}{e^{2x}} = -1",
+                    "\\frac{C}{e^{2x}} = Ce^{-2x}"
+                ],
+                // Step 6 substitution
+                ic_substitution: [
+                    "1 = 2(0) - 1 + Ce^{-2(0)}",
+                    "1 = 0 - 1 + C \\cdot e^{0}",
+                    "1 = -1 + C \\cdot (1) \\quad \\text{(kerana } e^{0} = 1\\text{)}",
+                    "1 = -1 + C",
+                    "C = 1 + 1 = 2"
+                ]
+            },
+            {
+                P: "3", Q: "6e^x",
+                P_latex: "3", Q_latex: "6e^{x}",
+                integral_P: "3x", integral_P_latex: "3x",
+                mu: "e^(3x)", mu_latex: "e^{3x}",
+                integration_result: "(3/2)e^(4x)",
+                integration_result_latex: "\\tfrac{3}{2}e^{4x}",
+                general_solution: "(3/2)e^x+Ce^(-3x)",
+                general_solution_latex: "\\tfrac{3}{2}e^{x} + Ce^{-3x}",
+                initial_x: "0", initial_y: "2", C: "1/2",
+                particular_solution: "(3/2)e^x+(1/2)e^(-3x)",
+                particular_solution_latex: "\\tfrac{3}{2}e^{x} + \\tfrac{1}{2}e^{-3x}",
+                ic_string: "y(0) = 2",
+                needs_standard: false,
+                byParts: null,
+                simplify_steps: [
+                    "\\frac{\\frac{3}{2}e^{4x}}{e^{3x}} = \\frac{3}{2}e^{x}",
+                    "\\frac{C}{e^{3x}} = Ce^{-3x}"
+                ],
+                ic_substitution: [
+                    "2 = \\tfrac{3}{2}e^{0} + Ce^{-3(0)}",
+                    "2 = \\tfrac{3}{2} + C",
+                    "C = 2 - \\tfrac{3}{2} = \\tfrac{1}{2}"
+                ]
+            },
+            {
+                P: "1", Q: "x",
+                P_latex: "1", Q_latex: "x",
+                integral_P: "x", integral_P_latex: "x",
+                mu: "e^x", mu_latex: "e^{x}",
+                integration_result: "xe^x-e^x",
+                integration_result_latex: "xe^{x} - e^{x}",
+                general_solution: "x-1+Ce^(-x)",
+                general_solution_latex: "x - 1 + Ce^{-x}",
+                initial_x: "0", initial_y: "3", C: "4",
+                particular_solution: "x-1+4e^(-x)",
+                particular_solution_latex: "x - 1 + 4e^{-x}",
+                ic_string: "y(0) = 3",
+                needs_standard: false,
+                byParts: {
+                    u: "x", du: "dx",
+                    dv: "e^{x}\\,dx", v: "e^{x}"
+                },
+                simplify_steps: [
+                    "\\frac{xe^{x}}{e^{x}} = x",
+                    "\\frac{-e^{x}}{e^{x}} = -1",
+                    "\\frac{C}{e^{x}} = Ce^{-x}"
+                ],
+                ic_substitution: [
+                    "3 = (0) - 1 + Ce^{-(0)}",
+                    "3 = -1 + C",
+                    "C = 4"
+                ]
+            }
+        ];
+
+        // Current active problem (copy of first entry)
+        let solverProblemData = JSON.parse(JSON.stringify(solverProblems[0]));
+
+        // ============================================
+        // MATHJAX HELPER - typeset dynamic content
+        // ============================================
+        function typeset(elementOrList) {
+            if (window.MathJax && MathJax.typesetPromise) {
+                const nodes = Array.isArray(elementOrList) ? elementOrList : [elementOrList];
+                MathJax.typesetPromise(nodes).catch(err => {
+                    console.warn('MathJax typeset error:', err);
+                });
+            }
+        }
+
+        // Build the LaTeX for standard form equation given P and Q (LaTeX versions).
+        // Handles signs: "+ P y" or "- P y", with special cases P=1, P=-1.
+        function buildStandardFormLatex(p_latex, q_latex) {
+            let pTerm;
+            if (p_latex === "1") {
+                pTerm = "+ y";
+            } else if (p_latex === "-1") {
+                pTerm = "- y";
+            } else if (p_latex.startsWith('-')) {
+                const rest = p_latex.substring(1);
+                pTerm = `- \\textcolor{#f97316}{${rest}}\\,y`;
+            } else {
+                pTerm = `+ \\textcolor{#f97316}{${p_latex}}\\,y`;
+            }
+            return `\\[ \\frac{dy}{dx} ${pTerm} = \\textcolor{#10b981}{${q_latex}} \\]`;
+        }
+
+        // ============================================
+        // STEP VALIDATION
+        // ============================================
+        function checkStep1(answer) {
+            const feedback = document.getElementById('feedback1');
+            const needsStandard = solverProblemData.needs_standard || false;
+
+            if ((answer === 'yes' && !needsStandard) || (answer === 'no' && needsStandard)) {
+                feedback.className = 'feedback feedback-success show';
+                feedback.innerHTML = '✓ <strong>Betul!</strong> Persamaan ini sudah dalam standard form \\(\\frac{dy}{dx} + P(x)y = Q(x)\\). Kita boleh terus proceed ke step seterusnya.';
+                typeset(feedback);
+
+                const guideBox = document.getElementById('guide1');
+                if (guideBox) guideBox.classList.remove('show');
+
+                setTimeout(() => { nextStep(); }, 1500);
+            } else {
+                feedback.className = 'feedback feedback-error show';
+                if (answer === 'no' && !needsStandard) {
+                    feedback.innerHTML = '✗ <strong>Cuba lagi.</strong> Persamaan ini sudah dalam standard form. Tak perlu tukar lagi!';
+                } else if (answer === 'yes' && needsStandard) {
+                    feedback.innerHTML = '✗ <strong>Cuba lagi.</strong> Persamaan ini PERLU ditukar ke standard form dahulu (bahagi dengan coefficient \\(\\frac{dy}{dx}\\)).';
+                    typeset(feedback);
+                } else {
+                    feedback.innerHTML = '✗ Jawapan tidak tepat. Sila semak semula.';
+                }
+            }
+        }
+
+        function checkStep2() {
+            const inputPx = document.getElementById('inputPx').value.trim();
+            const inputQx = document.getElementById('inputQx').value.trim();
+            const feedback = document.getElementById('feedback2');
+
+            const correctPx = normalizeSolution(inputPx) === normalizeSolution(solverProblemData.P);
+            const correctQx = normalizeSolution(inputQx) === normalizeSolution(solverProblemData.Q);
+
+            if (correctPx && correctQx) {
+                document.getElementById('inputPx').classList.remove('incorrect');
+                document.getElementById('inputPx').classList.add('correct');
+                document.getElementById('inputQx').classList.remove('incorrect');
+                document.getElementById('inputQx').classList.add('correct');
+                feedback.className = 'feedback feedback-success show';
+                feedback.innerHTML = `✓ <strong>Sempurna!</strong> \\(P(x) = ${solverProblemData.P_latex}\\) dan \\(Q(x) = ${solverProblemData.Q_latex}\\). Sekarang kita boleh cari integrating factor!`;
+                typeset(feedback);
+
+                document.getElementById('guide2').classList.remove('show');
+                const guideButton = document.querySelector('#step2 .btn-warning');
+                if (guideButton) guideButton.textContent = '📚 Tunjuk Guide';
+
+                setTimeout(() => { nextStep(); }, 1500);
+            } else {
+                document.getElementById('inputPx').classList.toggle('incorrect', !correctPx);
+                document.getElementById('inputPx').classList.toggle('correct', correctPx);
+                document.getElementById('inputQx').classList.toggle('incorrect', !correctQx);
+                document.getElementById('inputQx').classList.toggle('correct', correctQx);
+
+                feedback.className = 'feedback feedback-error show';
+                let hint = '✗ ';
+                if (!correctPx) hint += `<strong>P(x)</strong> tidak betul (sepatutnya \\(${solverProblemData.P_latex}\\)). `;
+                if (!correctQx) hint += `<strong>Q(x)</strong> tidak betul (sepatutnya \\(${solverProblemData.Q_latex}\\)). `;
+                hint += 'Klik "Tunjuk Guide" untuk bantuan.';
+                feedback.innerHTML = hint;
+                typeset(feedback);
+            }
+        }
+
+        function checkStep3() {
+            const inputIntegral = document.getElementById('inputIntegral').value.trim();
+            const inputMu = document.getElementById('inputMu').value.trim();
+            const feedback = document.getElementById('feedback3');
+
+            const correctIntegral = normalizeSolution(inputIntegral) === normalizeSolution(solverProblemData.integral_P);
+            const correctMuExponent = normalizeSolution(inputMu) === normalizeSolution(solverProblemData.integral_P);
+
+            if (correctIntegral && correctMuExponent) {
+                document.getElementById('inputIntegral').classList.remove('incorrect');
+                document.getElementById('inputIntegral').classList.add('correct');
+                document.getElementById('inputMu').classList.remove('incorrect');
+                document.getElementById('inputMu').classList.add('correct');
+                feedback.className = 'feedback feedback-success show';
+                feedback.innerHTML = `✓ <strong>Excellent!</strong> \\(\\int P(x)\\,dx = ${solverProblemData.integral_P_latex}\\), jadi \\(\\mu(x) = \\textcolor{#f59e0b}{${solverProblemData.mu_latex}}\\). Next, kita akan multiply dan integrate!`;
+                typeset(feedback);
+
+                document.getElementById('guide3').classList.remove('show');
+                const guideButton = document.querySelector('#step3 .btn-warning');
+                if (guideButton) guideButton.textContent = '📚 Tunjuk Guide';
+
+                setTimeout(() => { nextStep(); }, 1500);
+            } else {
+                document.getElementById('inputIntegral').classList.toggle('incorrect', !correctIntegral);
+                document.getElementById('inputIntegral').classList.toggle('correct', correctIntegral);
+                document.getElementById('inputMu').classList.toggle('incorrect', !correctMuExponent);
+                document.getElementById('inputMu').classList.toggle('correct', correctMuExponent);
+
+                feedback.className = 'feedback feedback-error show';
+                let hint = '✗ ';
+                if (!correctIntegral) hint += `Hasil integral \\(\\int P(x)\\,dx\\) tidak betul (sepatutnya \\(${solverProblemData.integral_P_latex}\\)). `;
+                if (!correctMuExponent) hint += `Exponent untuk \\(\\mu(x)\\) tidak betul (sepatutnya \\(${solverProblemData.integral_P_latex}\\)). `;
+                hint += 'Klik "Tunjuk Guide" untuk bantuan.';
+                feedback.innerHTML = hint;
+                typeset(feedback);
+            }
+        }
+
+        function checkStep4() {
+            const inputIntegration = document.getElementById('inputIntegration').value.trim();
+            const feedback = document.getElementById('feedback4');
+
+            const correct = normalizeSolution(inputIntegration) === normalizeSolution(solverProblemData.integration_result);
+
+            if (correct) {
+                document.getElementById('inputIntegration').classList.remove('incorrect');
+                document.getElementById('inputIntegration').classList.add('correct');
+                feedback.className = 'feedback feedback-success show';
+                feedback.innerHTML = `✓ <strong>Perfect!</strong> Hasil integral \\(\\int \\mu(x) Q(x)\\,dx = ${solverProblemData.integration_result_latex}\\). Good job!`;
+                typeset(feedback);
+
+                document.getElementById('guide4').classList.remove('show');
+                const guideButton = document.querySelector('#step4 .btn-warning');
+                if (guideButton) guideButton.textContent = '📚 Tunjuk Guide';
+
+                setTimeout(() => { nextStep(); }, 1500);
+            } else {
+                document.getElementById('inputIntegration').classList.remove('correct');
+                document.getElementById('inputIntegration').classList.add('incorrect');
+                feedback.className = 'feedback feedback-error show';
+                let hint = `✗ Hasil integral \\(\\int \\mu(x) Q(x)\\,dx\\) tidak tepat (sepatutnya \\(${solverProblemData.integration_result_latex}\\)). `;
+                hint += 'Klik "Tunjuk Guide" untuk bantuan.';
+                feedback.innerHTML = hint;
+                typeset(feedback);
+            }
+        }
+
+        function checkStep5() {
+            const inputY = document.getElementById('inputY').value.trim();
+            const feedback = document.getElementById('feedback5');
+            const correct = normalizeSolution(inputY) === normalizeSolution(solverProblemData.general_solution);
+
+            if (correct) {
+                document.getElementById('inputY').classList.remove('incorrect');
+                document.getElementById('inputY').classList.add('correct');
+                feedback.className = 'feedback feedback-success show';
+                feedback.innerHTML = `✓ <strong>Bagus sekali!</strong> General solution betul: \\(y = ${solverProblemData.general_solution_latex}\\)`;
+                typeset(feedback);
+
+                document.getElementById('guide5').classList.remove('show');
+                const guideButton = document.querySelector('#step5 .btn-warning');
+                if (guideButton) guideButton.textContent = '📚 Tunjuk Guide';
+
+                setTimeout(() => { nextStep(); }, 1500);
+            } else {
+                document.getElementById('inputY').classList.remove('correct');
+                document.getElementById('inputY').classList.add('incorrect');
+                feedback.className = 'feedback feedback-error show';
+                let hint = `✗ General solution tidak tepat (sepatutnya \\(y = ${solverProblemData.general_solution_latex}\\)). `;
+                hint += 'Klik "Tunjuk Guide" untuk bantuan.';
+                feedback.innerHTML = hint;
+                typeset(feedback);
+            }
+        }
+
+        function checkStep6() {
+            const inputC = document.getElementById('inputC').value.trim();
+            const inputParticular = document.getElementById('inputParticular').value.trim();
+            const feedback = document.getElementById('feedback6');
+
+            const correctC = normalizeSolution(inputC) === normalizeSolution(solverProblemData.C);
+            const correctParticular = normalizeSolution(inputParticular) === normalizeSolution(solverProblemData.particular_solution);
+
+            if (correctC && correctParticular) {
+                document.getElementById('inputC').classList.remove('incorrect');
+                document.getElementById('inputC').classList.add('correct');
+                document.getElementById('inputParticular').classList.remove('incorrect');
+                document.getElementById('inputParticular').classList.add('correct');
+                feedback.className = 'feedback feedback-success show';
+                feedback.innerHTML = `🎉 <strong>Tahniah!</strong> Anda berjaya selesaikan problem ini! \\(C = ${solverProblemData.C}\\), dan particular solution: \\(y = ${solverProblemData.particular_solution_latex}\\). Well done! 🌟`;
+                typeset(feedback);
+
+                document.querySelector('.progress-step[data-step="6"]').classList.add('completed');
+
+                document.getElementById('guide6').classList.remove('show');
+                const guideButton = document.querySelector('#step6 .btn-warning');
+                if (guideButton) guideButton.textContent = '📚 Tunjuk Guide';
+            } else {
+                document.getElementById('inputC').classList.toggle('incorrect', !correctC);
+                document.getElementById('inputC').classList.toggle('correct', correctC);
+                document.getElementById('inputParticular').classList.toggle('incorrect', !correctParticular);
+                document.getElementById('inputParticular').classList.toggle('correct', correctParticular);
+
+                feedback.className = 'feedback feedback-error show';
+                let hint = '✗ ';
+                if (!correctC) hint += `Nilai C tidak betul (sepatutnya \\(${solverProblemData.C}\\)). `;
+                if (!correctParticular) hint += `Particular solution tidak tepat (sepatutnya \\(y = ${solverProblemData.particular_solution_latex}\\)). `;
+                hint += 'Klik "Tunjuk Guide" untuk bantuan.';
+                feedback.innerHTML = hint;
+                typeset(feedback);
+            }
+        }
+
+
+        // ============================================
+        // GUIDE / HINTS
+        // ============================================
+        function toggleGuide(step, buttonElement) {
+            const guideBox = document.getElementById('guide' + step);
+            if (!guideBox) return;
+            const isShown = guideBox.classList.contains('show');
+            if (isShown) {
+                guideBox.classList.remove('show');
+                buttonElement.textContent = '📚 Tunjuk Guide';
+            } else {
+                populateGuideContent(step);
+                guideBox.classList.add('show');
+                buttonElement.textContent = '🙈 Sembunyi Guide';
+                typeset(guideBox);
+                setTimeout(() => guideBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 200);
+            }
+        }
+
+        function populateGuideContent(step) {
+            const d = solverProblemData;
+            const box = document.getElementById('guide' + step);
+            if (!box) return;
+
+            switch(step) {
+                case 2:
+                    box.innerHTML = `
+                        <h4>Panduan Step 2: Kenal pasti P(x) & Q(x)</h4>
+                        <p>Bandingkan persamaan anda dengan standard form:</p>
+                        <div class="math-scroll">\\[ \\frac{dy}{dx} + \\textcolor{#f97316}{P(x)}\\,y = \\textcolor{#10b981}{Q(x)} \\]</div>
+                        <ul style="margin-top: 10px;">
+                            <li>Term yang didarab dengan <strong>y</strong> ialah <strong class="color-p-text">P(x)</strong>.</li>
+                            <li>Term di sebelah kanan persamaan ialah <strong class="color-q-text">Q(x)</strong>.</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Jawapan:</strong></p>
+                        <p>\\(\\textcolor{#f97316}{P(x) = ${d.P_latex}}\\)</p>
+                        <p>\\(\\textcolor{#10b981}{Q(x) = ${d.Q_latex}}\\)</p>
+                    `;
+                    break;
+
+                case 3:
+                    box.innerHTML = `
+                        <h4>Panduan Step 3: Kira Integrating Factor</h4>
+                        <p>Kita tahu \\(\\textcolor{#f97316}{P(x) = ${d.P_latex}}\\).</p>
+                        <p><strong>1.</strong> Integrate P(x):</p>
+                        <div class="math-scroll" style="margin-left: 20px;">\\[ \\int \\textcolor{#f97316}{P(x)}\\,dx = \\int ${d.P_latex}\\,dx = ${d.integral_P_latex} \\]</div>
+                        <p style="font-size: 0.9em; margin-left: 20px;">(Nota: Kita tak perlu letak \\(+C\\) semasa mengira \\(\\mu(x)\\))</p>
+                        <p><strong>2.</strong> Gunakan hasil integral sebagai exponent e:</p>
+                        <div class="math-scroll" style="margin-left: 20px;">\\[ \\textcolor{#f59e0b}{\\mu(x)} = e^{\\int \\textcolor{#f97316}{P(x)}\\,dx} = \\textcolor{#f59e0b}{${d.mu_latex}} \\]</div>
+                        <p style="margin-top: 10px;"><strong>Jawapan:</strong></p>
+                        <p>\\(\\int ${d.P_latex}\\,dx = ${d.integral_P_latex}\\)</p>
+                        <p>\\(\\textcolor{#f59e0b}{\\mu(x) = ${d.mu_latex}}\\)</p>
+                    `;
+                    break;
+
+                case 4:
+                    let byPartsHTML;
+                    if (d.byParts) {
+                        byPartsHTML = `
+                            <p>Gunakan <strong>Integration by Parts</strong>: \\(\\int u\\,dv = uv - \\int v\\,du\\)</p>
+                            <ul style="margin-top: 10px; list-style: none; padding-left: 0;">
+                                <li>Let \\(u = ${d.byParts.u}\\) <em>(jadi lebih simple bila differentiate)</em></li>
+                                <li>Let \\(dv = ${d.byParts.dv}\\)</li>
+                            </ul>
+                            <ul style="margin-top: 10px; list-style: none; padding-left: 0;">
+                                <li>Then \\(du = ${d.byParts.du}\\)</li>
+                                <li>Then \\(v = \\int ${d.byParts.dv.replace('\\,dx','')}\\,dx = ${d.byParts.v}\\)</li>
+                            </ul>
+                            <div class="math-scroll">\\[ \\int u\\,dv = uv - \\int v\\,du \\]</div>
+                            <div class="math-scroll">\\[ \\int \\textcolor{#f59e0b}{${d.mu_latex}} \\cdot \\textcolor{#10b981}{${d.Q_latex}}\\,dx = ${d.integration_result_latex} \\]</div>
+                        `;
+                    } else {
+                        byPartsHTML = `
+                            <p>Darab \\(\\textcolor{#f59e0b}{${d.mu_latex}}\\) dengan \\(\\textcolor{#10b981}{${d.Q_latex}}\\), kemudian integrate:</p>
+                            <div class="math-scroll">\\[ \\int \\textcolor{#f59e0b}{${d.mu_latex}} \\cdot \\textcolor{#10b981}{${d.Q_latex}}\\,dx = ${d.integration_result_latex} \\]</div>
+                        `;
+                    }
+                    box.innerHTML = `
+                        <h4>Panduan Step 4: Integrate \\(\\int \\mu(x) Q(x)\\,dx\\)</h4>
+                        <p>Kita perlu selesaikan:</p>
+                        <div class="math-scroll">\\[ \\int \\textcolor{#f59e0b}{${d.mu_latex}} \\cdot \\textcolor{#10b981}{${d.Q_latex}}\\,dx \\]</div>
+                        ${byPartsHTML}
+                        <p style="margin-top: 10px;"><strong>Jawapan:</strong></p>
+                        <div class="math-scroll">\\[ \\int \\textcolor{#f59e0b}{${d.mu_latex}} \\cdot \\textcolor{#10b981}{${d.Q_latex}}\\,dx = ${d.integration_result_latex} \\]</div>
+                    `;
+                    break;
+
+                case 5:
+                    const simplifyList = (d.simplify_steps || []).map(s => `<li>\\(${s}\\)</li>`).join('');
+                    box.innerHTML = `
+                        <h4>Panduan Step 5: Solve for y (General Solution)</h4>
+                        <p>Dari Step 4, kita dapat:</p>
+                        <div class="math-scroll" style="margin-left: 20px;">\\[ y \\cdot \\textcolor{#f59e0b}{${d.mu_latex}} = ${d.integration_result_latex} + C \\]</div>
+                        <p>Untuk dapatkan y, bahagi KESELURUHAN sebelah kanan dengan \\(\\textcolor{#f59e0b}{${d.mu_latex}}\\):</p>
+                        <div class="math-scroll" style="margin-left: 20px;">\\[ y = \\frac{${d.integration_result_latex} + C}{\\textcolor{#f59e0b}{${d.mu_latex}}} \\]</div>
+                        <p>Simplify setiap term:</p>
+                        <ul style="margin-left: 20px; list-style: disc;">${simplifyList}</ul>
+                        <p style="margin-top: 10px;"><strong>Jawapan (General Solution):</strong></p>
+                        <div class="math-scroll">\\[ y = ${d.general_solution_latex} \\]</div>
+                    `;
+                    break;
+
+                case 6:
+                    const subSteps = (d.ic_substitution || []).map(s => `<div class="math-scroll" style="margin-left:20px;">\\[ ${s} \\]</div>`).join('');
+                    box.innerHTML = `
+                        <h4>Panduan Step 6: Apply Initial Condition (IC)</h4>
+                        <p>General Solution: \\(y = ${d.general_solution_latex}\\)</p>
+                        <p>Initial Condition: <strong class="color-p-text">${d.ic_string}</strong> (bermaksud apabila \\(x=${d.initial_x}\\), \\(y=${d.initial_y}\\))</p>
+                        <p>Gantikan \\(x=${d.initial_x}\\) dan \\(y=${d.initial_y}\\) ke dalam General Solution:</p>
+                        ${subSteps}
+                        <p>Gantikan \\(C=${d.C}\\) semula ke dalam General Solution untuk dapatkan Particular Solution:</p>
+                        <p style="margin-top: 10px;"><strong>Jawapan:</strong></p>
+                        <p>\\(C = ${d.C}\\)</p>
+                        <p>Particular Solution: <strong>\\(y = ${d.particular_solution_latex}\\)</strong></p>
+                    `;
+                    break;
+            }
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function nextStep() {
+            const currentGuideBox = document.getElementById('guide' + currentStep);
+            const currentGuideButton = document.querySelector('#step' + currentStep + ' .btn-warning');
+            if (currentGuideBox) currentGuideBox.classList.remove('show');
+            if (currentGuideButton) currentGuideButton.textContent = '📚 Tunjuk Guide';
+
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.add('completed');
+            document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.remove('active');
+
+            currentStep++;
+            if (currentStep <= 6) {
+                updateStepContent(currentStep);
+                document.getElementById('step' + currentStep).classList.add('active');
+                document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.add('active');
+                document.getElementById('prevBtn').disabled = false;
+                document.getElementById('step' + currentStep).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function previousStep() {
+            const currentGuideBox = document.getElementById('guide' + currentStep);
+            const currentGuideButton = document.querySelector('#step' + currentStep + ' .btn-warning');
+            if (currentGuideBox) currentGuideBox.classList.remove('show');
+            if (currentGuideButton) currentGuideButton.textContent = '📚 Tunjuk Guide';
+
+            if (currentStep > 1) {
+                document.getElementById('step' + currentStep).classList.remove('active');
+                document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.remove('active');
+
+                currentStep--;
+                updateStepContent(currentStep);
+
+                document.getElementById('step' + currentStep).classList.add('active');
+                document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.add('active');
+                document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.remove('completed');
+
+                if (currentStep === 1) {
+                    document.getElementById('prevBtn').disabled = true;
+                }
+                document.getElementById('step' + currentStep).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function resetSolver() {
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById('step' + i).classList.remove('active');
+                document.querySelector('.progress-step[data-step="' + i + '"]').classList.remove('completed');
+                document.querySelector('.progress-step[data-step="' + i + '"]').classList.remove('active');
+
+                const inputs = document.querySelectorAll('#step' + i + ' input');
+                inputs.forEach(input => {
+                    input.value = '';
+                    input.classList.remove('correct', 'incorrect');
+                });
+
+                const feedback = document.getElementById('feedback' + i);
+                if (feedback) feedback.classList.remove('show');
+
+                const guideBox = document.getElementById('guide' + i);
+                const guideButton = document.querySelector('#step' + i + ' .btn-warning');
+                if (guideBox) guideBox.classList.remove('show');
+                if (guideButton) guideButton.textContent = '📚 Tunjuk Guide';
+            }
+
+            currentStep = 1;
+            updateStepContent(1);
+            document.getElementById('step1').classList.add('active');
+            document.querySelector('.progress-step[data-step="1"]').classList.add('active');
+            document.getElementById('prevBtn').disabled = true;
+            document.getElementById('step1').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Update ALL dynamic equation displays for a given step
+        function updateStepContent(step) {
+            const d = solverProblemData;
+            const elementsToTypeset = [];
+
+            switch(step) {
+                case 1: {
+                    const el = document.getElementById('step1EquationDisplay');
+                    el.innerHTML = buildStandardFormLatex(d.P_latex, d.Q_latex);
+                    elementsToTypeset.push(el);
+                    break;
+                }
+                case 2: {
+                    const el = document.getElementById('step2EquationDisplay');
+                    el.innerHTML = buildStandardFormLatex(d.P_latex, d.Q_latex);
+                    elementsToTypeset.push(el);
+                    break;
+                }
+                case 3: {
+                    const el = document.getElementById('step3IntegralDisplay');
+                    el.innerHTML = `\\[ \\int \\textcolor{#f97316}{P(x)}\\,dx = \\int ${d.P_latex}\\,dx \\]`;
+                    elementsToTypeset.push(el);
+                    break;
+                }
+                case 4: {
+                    const eq = document.getElementById('step4IntegralEq');
+                    eq.innerHTML = `\\[ y \\cdot \\textcolor{#f59e0b}{${d.mu_latex}} = \\int \\textcolor{#f59e0b}{${d.mu_latex}} \\cdot \\textcolor{#10b981}{${d.Q_latex}}\\,dx + C \\]`;
+                    const lbl = document.getElementById('step4IntegralLabel');
+                    lbl.innerHTML = `\\(\\int \\textcolor{#f59e0b}{${d.mu_latex}} \\cdot \\textcolor{#10b981}{${d.Q_latex}}\\,dx\\) =`;
+                    elementsToTypeset.push(eq, lbl);
+                    break;
+                }
+                case 5: {
+                    const el = document.getElementById('step5GenSolEq');
+                    el.innerHTML = `\\[ y \\cdot \\textcolor{#f59e0b}{${d.mu_latex}} = ${d.integration_result_latex} + C \\]`;
+                    elementsToTypeset.push(el);
+                    break;
+                }
+                case 6: {
+                    document.getElementById('step6IC').textContent = d.ic_string;
+                    break;
+                }
+            }
+            if (elementsToTypeset.length > 0) typeset(elementsToTypeset);
+        }
+
+        function generateNewProblem() {
+            // Cycle to a new problem from solverProblems
+            const currentIndex = solverProblems.findIndex(p =>
+                p.P === solverProblemData.P && p.Q === solverProblemData.Q);
+            const nextIndex = (currentIndex + 1) % solverProblems.length;
+            solverProblemData = JSON.parse(JSON.stringify(solverProblems[nextIndex]));
+
+            // Update main problem display
+            const probEl = document.getElementById('currentProblem');
+            probEl.innerHTML = buildStandardFormLatex(solverProblemData.P_latex, solverProblemData.Q_latex);
+            document.getElementById('currentProblemIC').textContent = `Initial condition: ${solverProblemData.ic_string}`;
+            typeset(probEl);
+
+            resetSolver();
+        }
+
+
+        // ============================================
+        // PRACTICE ZONE
+        // ============================================
+        const practiceProblems = {
+            easy: [
+                {
+                    eq_latex: "\\frac{dy}{dx} + \\textcolor{#f97316}{1}\\,y = \\textcolor{#10b981}{2}",
+                    ic_str: "y(0) = 3",
+                    sol: "2+e^(-x)",
+                    sol_latex: "2 + e^{-x}",
+                    P: "1", Q: "2",
+                    P_latex: "1", Q_latex: "2",
+                    mu_latex: "e^{x}",
+                    integral_PQ_latex: "2e^{x}",
+                    C: "1"
+                },
+                {
+                    eq_latex: "\\frac{dy}{dx} + \\textcolor{#f97316}{3}\\,y = \\textcolor{#10b981}{6}",
+                    ic_str: "y(0) = 1",
+                    sol: "2-e^(-3x)",
+                    sol_latex: "2 - e^{-3x}",
+                    P: "3", Q: "6",
+                    P_latex: "3", Q_latex: "6",
+                    mu_latex: "e^{3x}",
+                    integral_PQ_latex: "2e^{3x}",
+                    C: "-1"
+                },
+                {
+                    eq_latex: "\\frac{dy}{dx} - \\textcolor{#f97316}{1}\\,y = \\textcolor{#10b981}{4}",
+                    ic_str: "y(0) = 2",
+                    sol: "-4+6e^x",
+                    sol_latex: "-4 + 6e^{x}",
+                    P: "-1", Q: "4",
+                    P_latex: "-1", Q_latex: "4",
+                    mu_latex: "e^{-x}",
+                    integral_PQ_latex: "-4e^{-x}",
+                    C: "6"
+                }
+            ],
+            medium: [
+                {
+                    eq_latex: "\\frac{dy}{dx} + \\textcolor{#f97316}{2}\\,y = \\textcolor{#10b981}{4e^{x}}",
+                    ic_str: "y(0) = 2",
+                    sol: "(4/3)e^x+(2/3)e^(-2x)",
+                    sol_latex: "\\tfrac{4}{3}e^{x} + \\tfrac{2}{3}e^{-2x}",
+                    P: "2", Q: "4e^x",
+                    P_latex: "2", Q_latex: "4e^{x}",
+                    mu_latex: "e^{2x}",
+                    integral_PQ_latex: "\\tfrac{4}{3}e^{3x}",
+                    C: "2/3"
+                },
+                {
+                    eq_latex: "\\frac{dy}{dx} + \\textcolor{#f97316}{\\frac{1}{x}}\\,y = \\textcolor{#10b981}{x}",
+                    ic_str: "y(1) = 2",
+                    sol: "(1/3)x^2+(5/3)x^(-1)",
+                    sol_latex: "\\tfrac{1}{3}x^{2} + \\tfrac{5}{3}x^{-1}",
+                    P: "1/x", Q: "x",
+                    P_latex: "\\tfrac{1}{x}", Q_latex: "x",
+                    mu_latex: "x",
+                    integral_PQ_latex: "\\tfrac{1}{3}x^{3}",
+                    C: "5/3"
+                },
+                {
+                    eq_latex: "\\frac{dy}{dx} - \\textcolor{#f97316}{2}\\,y = \\textcolor{#10b981}{6x}",
+                    ic_str: "y(0) = 1",
+                    sol: "-3x-(3/2)+(5/2)e^(2x)",
+                    sol_latex: "-3x - \\tfrac{3}{2} + \\tfrac{5}{2}e^{2x}",
+                    P: "-2", Q: "6x",
+                    P_latex: "-2", Q_latex: "6x",
+                    mu_latex: "e^{-2x}",
+                    integral_PQ_latex: "-3xe^{-2x} - \\tfrac{3}{2}e^{-2x}",
+                    C: "5/2"
+                }
+            ],
+            hard: [
+                {
+                    eq_latex: "xy' + \\textcolor{#f97316}{2}\\,y = \\textcolor{#10b981}{4x^{2}}",
+                    ic_str: "y(1) = 3",
+                    sol: "x^2+2x^(-2)",
+                    sol_latex: "x^{2} + 2x^{-2}",
+                    P_std: "2/x", Q_std: "4x",
+                    P: "2", Q: "4x^2",
+                    P_latex: "\\tfrac{2}{x}", Q_latex: "4x",
+                    mu_latex: "x^{2}",
+                    integral_PQ_latex: "x^{4}",
+                    C: "2"
+                },
+                {
+                    eq_latex: "\\frac{dy}{dx} + \\textcolor{#f97316}{\\tan(x)}\\,y = \\textcolor{#10b981}{\\sec(x)}",
+                    ic_str: "y(0) = 1",
+                    sol: "sin(x)+cos(x)",
+                    sol_latex: "\\sin(x) + \\cos(x)",
+                    P: "tan(x)", Q: "sec(x)",
+                    P_latex: "\\tan(x)", Q_latex: "\\sec(x)",
+                    mu_latex: "\\sec(x)",
+                    integral_PQ_latex: "\\tan(x)",
+                    C: "1"
+                },
+                {
+                    eq_latex: "\\frac{dy}{dx} + \\textcolor{#f97316}{\\frac{1}{x}}\\,y = \\textcolor{#10b981}{\\cos(x)}",
+                    ic_str: "y(\\pi/2) = 1",
+                    sol: "sin(x)+cos(x)*x^(-1)",
+                    sol_latex: "\\sin(x) + \\frac{\\cos(x)}{x}",
+                    P: "1/x", Q: "cos(x)",
+                    P_latex: "\\tfrac{1}{x}", Q_latex: "\\cos(x)",
+                    mu_latex: "x",
+                    integral_PQ_latex: "x\\sin(x) + \\cos(x)",
+                    C: "0"
+                }
+            ]
+        };
+
+        function setDifficulty(level) {
+            currentDifficulty = level;
+
+            document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+            const targetButton = event ? event.target : document.querySelector(`.difficulty-btn[onclick="setDifficulty('${level}')"]`);
+            if (targetButton) targetButton.classList.add('active');
+
+            document.getElementById('practiceProblem').innerHTML = 'Tiada problem lagi. Generate problem dahulu! 👆';
+            document.getElementById('practiceIC').textContent = '';
+            document.getElementById('practiceAnswer').value = '';
+            document.getElementById('practiceFeedback').classList.remove('show');
+            document.getElementById('practiceSolution').style.display = 'none';
+
+            currentPracticeProblem = null;
+
+            const feedback = document.getElementById('practiceFeedback');
+            feedback.className = 'feedback feedback-info show';
+            const levelNames = { easy: 'Mudah', medium: 'Sederhana', hard: 'Mencabar' };
+            feedback.innerHTML = `ℹ️ Tahap kesukaran ditukar ke <strong>${levelNames[level]}</strong>. Sila generate problem baru.`;
+
+            setTimeout(() => {
+                if (feedback.innerHTML.includes(`ditukar ke <strong>${levelNames[level]}`)) {
+                    feedback.classList.remove('show');
+                }
+            }, 2500);
+        }
+
+        function generatePractice() {
+            const selected = practiceProblems[currentDifficulty];
+            const randomIndex = Math.floor(Math.random() * selected.length);
+            currentPracticeProblem = selected[randomIndex];
+
+            const probEl = document.getElementById('practiceProblem');
+            probEl.innerHTML = `\\[ ${currentPracticeProblem.eq_latex} \\]`;
+            document.getElementById('practiceIC').innerHTML = 'Initial condition: \\(' + currentPracticeProblem.ic_str + '\\)';
+            document.getElementById('practiceAnswer').value = '';
+            document.getElementById('practiceAnswer').classList.remove('correct', 'incorrect');
+
+            const feedback = document.getElementById('practiceFeedback');
+            feedback.classList.remove('show');
+            document.getElementById('practiceSolution').style.display = 'none';
+
+            feedback.className = 'feedback feedback-info show';
+            feedback.innerHTML = 'ℹ️ Problem baru telah dijana! Cuba selesaikan dan semak jawapan anda.';
+
+            typeset([probEl, document.getElementById('practiceIC')]);
+
+            setTimeout(() => {
+                if (feedback.innerHTML.includes('Problem baru telah dijana')) {
+                    feedback.classList.remove('show');
+                }
+            }, 2500);
+        }
+
+        // Normalize for answer comparison (plain text format)
+        function normalizeSolution(sol) {
+            if (typeof sol !== 'string') return '';
+            return sol.toLowerCase()
+                      .replace(/\s+/g, '')
+                      .replace(/\*\*/g, '^')
+                      .replace(/\*/g, '')
+                      .replace(/\(\s*([\d\.]+)\s*\/\s*([\d\.]+)\s*\)/g, (match, num, den) => {
+                          const denVal = parseFloat(den);
+                          if (denVal !== 0) { return (parseFloat(num) / denVal).toFixed(3); }
+                          return match;
+                      })
+                      .replace(/\)\/x\^?(\d*)/g, (match, p1) => `)x^(-${p1 || '1'})`)
+                      .replace(/\/x\^?(\d*)/g, (match, p1) => `x^(-${p1 || '1'})`)
+                      .replace(/\(-/g, '(')
+                      .replace(/\^/g, '')
+                      .replace(/exp\(/g, 'e(')
+                      .replace(/^\+/, '')
+                      .replace(/\+-/g, '-')
+                      .split('+').sort().join('+');
+        }
+
+        function checkPractice() {
+            const feedback = document.getElementById('practiceFeedback');
+            if (!currentPracticeProblem) {
+                feedback.className = 'feedback feedback-error show';
+                feedback.innerHTML = '✗ Sila generate problem dahulu!';
+                return;
+            }
+
+            const userAnswer = document.getElementById('practiceAnswer').value.trim();
+            if (!userAnswer) {
+                feedback.className = 'feedback feedback-error show';
+                feedback.innerHTML = '✗ Sila masukkan jawapan anda.';
+                return;
+            }
+
+            practiceScore.total++;
+            const normalizedUser = normalizeSolution(userAnswer);
+            const normalizedCorrect = normalizeSolution(currentPracticeProblem.sol || '');
+
+            if (normalizedUser === normalizedCorrect) {
+                practiceScore.correct++;
+                document.getElementById('practiceAnswer').classList.remove('incorrect');
+                document.getElementById('practiceAnswer').classList.add('correct');
+                feedback.className = 'feedback feedback-success show';
+                feedback.innerHTML = `🎉 <strong>Betul!</strong> Jawapan: \\(y = ${currentPracticeProblem.sol_latex}\\)`;
+                typeset(feedback);
+            } else {
+                document.getElementById('practiceAnswer').classList.remove('correct');
+                document.getElementById('practiceAnswer').classList.add('incorrect');
+                feedback.className = 'feedback feedback-error show';
+                feedback.innerHTML = `✗ Tidak tepat. Jawapan sebenar: \\(y = ${currentPracticeProblem.sol_latex}\\). Cuba lagi atau klik "Lihat Solution" untuk penyelesaian lengkap.`;
+                typeset(feedback);
+            }
+
+            updateScore();
+        }
+
+        function showPracticeSolution() {
+            if (!currentPracticeProblem) {
+                const feedback = document.getElementById('practiceFeedback');
+                feedback.className = 'feedback feedback-error show';
+                feedback.innerHTML = '✗ Sila generate problem dahulu!';
+                return;
+            }
+
+            const p = currentPracticeProblem;
+            const solutionDiv = document.getElementById('practiceSolution');
+            const stepsDiv = document.getElementById('solutionSteps');
+
+            const stdP_latex = p.P_latex;
+            const stdQ_latex = p.Q_latex;
+
+            let standardFormStep = "";
+            if (p.eq_latex.includes("y'") && p.P_std) {
+                standardFormStep = `
+                    <div style="margin: 10px 0; padding: 12px; background: #fef3c7; border-radius: 6px;">
+                        <strong>Langkah: Tukar ke Standard Form</strong>
+                        <div class="math-scroll">\\[ ${buildStdFormInline(stdP_latex, stdQ_latex)} \\]</div>
+                    </div>`;
+            } else {
+                standardFormStep = `
+                    <div style="margin: 10px 0; padding: 12px; background: #fef3c7; border-radius: 6px;">
+                        <strong>Standard Form:</strong>
+                        <div class="math-scroll">\\[ ${p.eq_latex} \\]</div>
+                    </div>`;
+            }
+
+            stepsDiv.innerHTML = `
+                <div style="margin: 10px 0; padding: 12px; background: white; border-radius: 6px;">
+                    <strong>Problem:</strong>
+                    <div class="math-scroll">\\[ ${p.eq_latex} \\]</div>
+                    <p>Initial condition: \\(${p.ic_str}\\)</p>
+                </div>
+                ${standardFormStep}
+                <div style="margin: 10px 0; padding: 12px; background: white; border-radius: 6px;">
+                    <strong>Identify P(x) & Q(x):</strong>
+                    <div class="math-scroll">\\[ \\textcolor{#f97316}{P(x) = ${stdP_latex}}, \\quad \\textcolor{#10b981}{Q(x) = ${stdQ_latex}} \\]</div>
+                </div>
+                <div style="margin: 10px 0; padding: 12px; background: white; border-radius: 6px;">
+                    <strong>Integrating Factor:</strong>
+                    <div class="math-scroll">\\[ \\textcolor{#f59e0b}{\\mu(x)} = e^{\\int \\textcolor{#f97316}{${stdP_latex}}\\,dx} = \\textcolor{#f59e0b}{${p.mu_latex}} \\]</div>
+                </div>
+                <div style="margin: 10px 0; padding: 12px; background: white; border-radius: 6px;">
+                    <strong>Integration:</strong>
+                    <div class="math-scroll">\\[ y \\cdot \\textcolor{#f59e0b}{${p.mu_latex}} = \\int \\textcolor{#f59e0b}{${p.mu_latex}} \\cdot \\textcolor{#10b981}{${stdQ_latex}}\\,dx + C \\]</div>
+                    <div class="math-scroll">\\[ \\int \\textcolor{#f59e0b}{${p.mu_latex}} \\cdot \\textcolor{#10b981}{${stdQ_latex}}\\,dx = ${p.integral_PQ_latex} \\]</div>
+                    <div class="math-scroll">\\[ y \\cdot \\textcolor{#f59e0b}{${p.mu_latex}} = ${p.integral_PQ_latex} + C \\]</div>
+                </div>
+                <div style="margin: 10px 0; padding: 12px; background: white; border-radius: 6px;">
+                    <strong>Apply IC (\\(${p.ic_str}\\)):</strong>
+                    <div class="math-scroll">\\[ C = ${p.C} \\]</div>
+                </div>
+                <div style="margin: 10px 0; padding: 12px; background: #dcfce7; border-radius: 6px;">
+                    <strong>Final Answer (Particular Solution):</strong>
+                    <div class="math-scroll" style="color: var(--result-color); font-weight: bold; font-size: 1.1rem;">\\[ y = ${p.sol_latex} \\]</div>
+                </div>
+            `;
+
+            solutionDiv.style.display = 'block';
+            typeset(solutionDiv);
+            setTimeout(() => solutionDiv.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
+        }
+
+        // Helper for building standard form inline (used by showPracticeSolution)
+        function buildStdFormInline(p_latex, q_latex) {
+            let pTerm;
+            if (p_latex === "1") pTerm = "+ y";
+            else if (p_latex === "-1") pTerm = "- y";
+            else if (p_latex.startsWith('-')) pTerm = `- \\textcolor{#f97316}{${p_latex.substring(1)}}\\,y`;
+            else pTerm = `+ \\textcolor{#f97316}{${p_latex}}\\,y`;
+            return `\\frac{dy}{dx} ${pTerm} = \\textcolor{#10b981}{${q_latex}}`;
+        }
+
+        function updateScore() {
+            document.getElementById('scoreDisplay').textContent =
+                `${practiceScore.correct}/${practiceScore.total}`;
+        }
+
+        // ============================================
+        // COLLAPSIBLE
+        // ============================================
+        function toggleCollapsible(element) {
+            element.classList.toggle('active');
+            const content = element.nextElementSibling;
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+            } else {
+                content.classList.add('show');
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Integrating Factor App loaded with MathJax support');
+
+            // Set main problem display
+            const probEl = document.getElementById('currentProblem');
+            probEl.innerHTML = buildStandardFormLatex(solverProblemData.P_latex, solverProblemData.Q_latex);
+            document.getElementById('currentProblemIC').textContent = `Initial condition: ${solverProblemData.ic_string}`;
+
+            // Set step 1 content
+            updateStepContent(1);
+
+            updateScore();
+
+            // Enter key support for all inputs
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const stepContainer = this.closest('.step-container');
+                        if (stepContainer) {
+                            const stepNum = stepContainer.id.replace('step', '');
+                            const checkFunction = window['checkStep' + stepNum];
+                            if (typeof checkFunction === 'function') {
+                                checkFunction();
+                            }
+                        }
+                        if (this.id === 'practiceAnswer') {
+                            checkPractice();
+                        }
+                    }
+                });
+            });
+
+            // Wait for MathJax to be ready before initial typeset of dynamic content
+            if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+                MathJax.startup.promise.then(() => {
+                    typeset([probEl]);
+                });
+            } else {
+                // Fallback: retry typeset after short delay
+                setTimeout(() => typeset([probEl]), 500);
+            }
+        });
+    </script>
+
+</body>
+</html>
