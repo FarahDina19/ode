@@ -458,6 +458,8 @@
             }
         }
     </style>
+<script>window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 </head>
 <body>
     <div class="container">
@@ -477,29 +479,29 @@
                 
                 <p><strong>1. Klasifikasi ODE: Order & Degree</strong></p>
                 <ul>
-                    <li><strong>Order (Peringkat)</strong>: Ini adalah peringkat terbitan tertinggi dalam persamaan. Contohnya, jika `dy/dx` ada, ordernya 1. Jika `d²y/dx²` ada, ordernya 2.</li>
+                    <li><strong>Order (Peringkat)</strong>: Ini adalah peringkat terbitan tertinggi dalam persamaan. Contohnya, jika \(\frac{dy}{dx}\) ada, ordernya 1. Jika \(\frac{d^2y}{dx^2}\) ada, ordernya 2.</li>
                     <li><strong>Degree (Darjah)</strong>: Ini adalah kuasa (power) kepada terbitan tertinggi itu, selepas persamaan dijadikan polynomial.</li>
                 </ul>
                 <p><em>Contoh Klasifikasi:</em></p>
                 <div class="equation-box">
-                    dy/dx + y = x &nbsp;&nbsp;&nbsp;&nbsp; (Order: 1, Degree: 1)<br>
-                    (d²y/dx²)³ + (dy/dx)² + y = 0 &nbsp;&nbsp;&nbsp;&nbsp; (Order: 2, Degree: 3)
+                    \(\frac{dy}{dx} + y = x\) &nbsp;&nbsp;&nbsp;&nbsp; (Order: 1, Degree: 1)<br>
+                    \(\left(\frac{d^2y}{dx^2}\right)^3 + \left(\frac{dy}{dx}\right)^2 + y = 0\) &nbsp;&nbsp;&nbsp;&nbsp; (Order: 2, Degree: 3)
                 </div>
 
                 <p><strong>2. Penyelesaian ODE Peringkat Pertama:</strong></p>
                 <p>Untuk ODE yang mempunyai peringkat 1, terdapat beberapa kaedah untuk mencari "cerita" atau "fungsi" asalnya.</p>
                 <ul>
                     <li><strong>Pemisahan Pemboleh Ubah (Separation of Variables):</strong><br>
-                        Kaedah ini boleh digunakan jika kita boleh pisahkan persamaan menjadi dua bahagian, satu hanya ada `y` dan `dy`, dan satu lagi hanya ada `x` dan `dx`. Kemudian, kita kamirkan (integrate) kedua-dua belah.
+                        Kaedah ini boleh digunakan jika kita boleh pisahkan persamaan menjadi dua bahagian, satu hanya ada \(y\) dan \(dy\), dan satu lagi hanya ada \(x\) dan \(dx\). Kemudian, kita kamirkan (integrate) kedua-dua belah.
                         <div class="equation-box">
-                            dy/dx = f(x)g(y) &rarr; dy/g(y) = f(x)dx
+                            \(\frac{dy}{dx} = f(x)g(y) \;\rightarrow\; \frac{dy}{g(y)} = f(x)\,dx\)
                         </div>
                     </li>
                     <li><strong>Faktor Pengamiran (Integrating Factor):</strong><br>
-                        Kaedah ini digunakan untuk ODE linear peringkat pertama yang berbentuk `dy/dx + P(x)y = Q(x)`. Kita darabkan seluruh persamaan dengan "faktor pengamiran" khas untuk membolehkan ia dikamirkan dengan mudah.
+                        Kaedah ini digunakan untuk ODE linear peringkat pertama yang berbentuk \(\frac{dy}{dx} + P(x)\,y = Q(x)\). Kita darabkan seluruh persamaan dengan "faktor pengamiran" khas untuk membolehkan ia dikamirkan dengan mudah.
                         <div class="equation-box">
-                            Faktor Pengamiran, μ(x) = e<sup>∫P(x)dx</sup><br>
-                            Penyelesaian: y * μ(x) = ∫Q(x) * μ(x) dx
+                            Faktor Pengamiran, \(\mu(x) = e^{\int P(x)\,dx}\)<br>
+                            Penyelesaian: \(y\,\mu(x) = \int Q(x)\,\mu(x)\,dx\)
                         </div>
                     </li>
                 </ul>
@@ -544,15 +546,15 @@
             </div>
             <div class="equation">
                 <h4>🔢 Rahsia Matematik (ODE)</h4>
-                <p>ODE untuk cerita ini sangat mudah. Ia cakap: <strong>"Kelajuan suhu kopi berubah (`dT/dt`)"</strong> adalah sama dengan <strong>"beza suhu (`T - T_A`)"</strong> didarab dengan satu nombor ajaib `-k`.</p>
+                <p>ODE untuk cerita ini sangat mudah. Ia cakap: <strong>"Kelajuan suhu kopi berubah (\(\frac{dT}{dt}\))"</strong> adalah sama dengan <strong>"beza suhu (\(T - T_A\))"</strong> didarab dengan satu nombor ajaib \(-k\).</p>
                 <div class="equation-box">
-                    dT/dt = -k(T - T<sub>A</sub>)
+                    \(\frac{dT}{dt} = -k(T - T_A)\)
                 </div>
                 <p><strong>Apa maksudnya?</strong></p>
                 <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li><strong>dT/dt</strong>: Laju suhu berubah (kadar perubahan!)</li>
+                    <li><strong>\(\frac{dT}{dt}\)</strong>: Laju suhu berubah (kadar perubahan!)</li>
                     <li><strong>T</strong>: Suhu kopi sekarang</li>
-                    <li><strong>T<sub>A</sub></strong>: Suhu bilik (Ambient)</li>
+                    <li><strong>\(T_A\)</strong>: Suhu bilik (Ambient)</li>
                     <li><strong>k</strong>: Pemalar khas (bergantung pada cawan)</li>
                 </ul>
             </div>
@@ -616,13 +618,13 @@
             </div>
             <div class="equation">
                 <h4>🔢 Rahsia Matematik (ODE)</h4>
-                <p>Cerita ini memberitahu kita: <strong>"Kelajuan populasi bertambah (`dP/dt`)"</strong> adalah sama dengan <strong>"bilangan populasi sekarang (`P`)"</strong> didarab dengan kadar pembiakan `k`.</p>
+                <p>Cerita ini memberitahu kita: <strong>"Kelajuan populasi bertambah (\(\frac{dP}{dt}\))"</strong> adalah sama dengan <strong>"bilangan populasi sekarang (\(P\))"</strong> didarab dengan kadar pembiakan \(k\).</p>
                 <div class="equation-box">
-                    dP/dt = kP
+                    \(\frac{dP}{dt} = kP\)
                 </div>
                 <p><strong>Apa maksudnya?</strong></p>
                 <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li><strong>dP/dt</strong>: Laju populasi bertambah (kadar perubahan!)</li>
+                    <li><strong>\(\frac{dP}{dt}\)</strong>: Laju populasi bertambah (kadar perubahan!)</li>
                     <li><strong>P</strong>: Bilangan populasi sekarang</li>
                     <li><strong>k</strong>: Kadar pembiakan (seberapa cepat ia membiak)</li>
                 </ul>
@@ -689,15 +691,15 @@
 
             <div class="equation">
                 <h4>✨ FORMULA AJAIB! ✨</h4>
-                <p>Peraturan untuk belon ini sangat hebat! Ia berbunyi: <strong>"Kelajuan belon kempis (`dA/dt`)"</strong> bergantung pada <strong>"sebanyak mana angin yang masih ada di dalam (`A`)"</strong>.</p>
+                <p>Peraturan untuk belon ini sangat hebat! Ia berbunyi: <strong>"Kelajuan belon kempis (\(\frac{dA}{dt}\))"</strong> bergantung pada <strong>"sebanyak mana angin yang masih ada di dalam (\(A\))"</strong>.</p>
                 <div class="equation-box formula-highlight">
-                    dA/dt = -kA
+                    \(\frac{dA}{dt} = -kA\)
                 </div>
                 <p style="text-align:center; margin-top:15px;">Ini adalah kod rahsia alam semesta untuk semua benda yang mereput atau berkurang!</p>
                 <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li><strong>dA/dt</strong>: Kelajuan angin keluar</li>
+                    <li><strong>\(\frac{dA}{dt}\)</strong>: Kelajuan angin keluar</li>
                     <li><strong>A</strong>: Jumlah angin di dalam belon</li>
-                    <li><strong>k</strong>: Nombor ajaib untuk saiz lubang (lagi besar lubang, lagi besar `k`)</li>
+                    <li><strong>k</strong>: Nombor ajaib untuk saiz lubang (lagi besar lubang, lagi besar \(k\))</li>
                 </ul>
             </div>
 
