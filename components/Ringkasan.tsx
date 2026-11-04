@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Card from './common/Card';
 
-type SummaryTab = '4.2' | '4.3';
+type SummaryTab = '4.1' | '4.2' | '4.3';
 
 const TABS: { id: SummaryTab; label: string; title: string }[] = [
+    { id: '4.1', label: 'Topik 4.1', title: 'Introduction to Ordinary Differential Equations' },
     { id: '4.2', label: 'Topik 4.2', title: 'First Order Differential Equations' },
     { id: '4.3', label: 'Topik 4.3', title: 'Second Order Differential Equations' },
 ];
@@ -33,6 +34,96 @@ const Example: React.FC<{ title: string; children: React.ReactNode }> = ({ title
     <div className="mt-6 space-y-2 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-text-dark">
         <p className="font-semibold text-emerald-800">{title}</p>
         {children}
+    </div>
+);
+
+const IntroductionSummary: React.FC = () => (
+    <div className="space-y-6">
+        <Card>
+            <SectionTitle en="Ordinary Differential Equation (ODE)" ms="Persamaan pembezaan biasa" />
+            <p className="text-text-dark">
+                Persamaan yang mengandungi satu atau lebih <strong>derivative</strong> bagi fungsi yang tidak diketahui,
+                contohnya <span className="font-mono">y(x)</span>. Ia dipanggil <em>ordinary</em> kerana hanya ada satu pembolehubah bebas, iaitu <span className="font-mono">x</span> atau <span className="font-mono">t</span>.
+            </p>
+            <Formula>dy/dx = k·y</Formula>
+            <p className="text-sm text-text-light">
+                Persamaan di atas bermaksud kadar perubahan <span className="font-mono">y</span> adalah berkadar dengan <span className="font-mono">y</span> itu sendiri.
+            </p>
+        </Card>
+
+        <Card>
+            <SectionTitle en="Order and Degree" ms="Peringkat (order) dan darjah (degree)" />
+            <ul className="list-disc list-outside pl-5 space-y-2 text-text-dark">
+                <li><strong>Order</strong> ialah peringkat derivative tertinggi dalam persamaan.</li>
+                <li><strong>Degree</strong> ialah kuasa bagi derivative peringkat tertinggi, selepas persamaan dibersihkan daripada pecahan dan punca. Degree hanya ditakrifkan jika persamaan ialah polinomial dalam derivative.</li>
+            </ul>
+            <Example title="Klasifikasi contoh">
+                <div className="overflow-x-auto">
+                    <table className="w-full border-collapse text-left text-sm">
+                        <thead>
+                            <tr className="border-b border-emerald-200 text-emerald-800">
+                                <th className="py-2 pr-4 font-semibold">Persamaan</th>
+                                <th className="py-2 pr-4 font-semibold">Order</th>
+                                <th className="py-2 font-semibold">Degree</th>
+                            </tr>
+                        </thead>
+                        <tbody className="font-mono">
+                            <tr className="border-b border-emerald-100">
+                                <td className="py-2 pr-4">dy/dx + 2y = x</td>
+                                <td className="py-2 pr-4">1</td>
+                                <td className="py-2">1</td>
+                            </tr>
+                            <tr className="border-b border-emerald-100">
+                                <td className="py-2 pr-4">d²y/dx² + 4y = 0</td>
+                                <td className="py-2 pr-4">2</td>
+                                <td className="py-2">1</td>
+                            </tr>
+                            <tr className="border-b border-emerald-100">
+                                <td className="py-2 pr-4">(dy/dx)³ + y = x</td>
+                                <td className="py-2 pr-4">1</td>
+                                <td className="py-2">3</td>
+                            </tr>
+                            <tr>
+                                <td className="py-2 pr-4">(d³y/dx³)² + (dy/dx)⁴ = 0</td>
+                                <td className="py-2 pr-4">3</td>
+                                <td className="py-2">2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </Example>
+        </Card>
+
+        <Card>
+            <SectionTitle en="Modelling with ODEs" ms="Memodelkan situasi dengan ODE" />
+            <p className="text-text-dark mb-3">Banyak situasi sebenar boleh diterangkan dengan ODE:</p>
+            <ul className="list-disc list-outside pl-5 space-y-3 text-text-dark">
+                <li>
+                    <strong>Penyejukan (Newton's law of cooling):</strong>{' '}
+                    <span className="font-mono">dT/dt = −k(T − T<sub>s</sub>)</span>. Kopi menjadi sejuk lebih perlahan apabila beza suhu dengan bilik semakin kecil.
+                </li>
+                <li>
+                    <strong>Pertumbuhan eksponen:</strong> <span className="font-mono">dP/dt = kP</span>. Bilangan bakteria membiak pada kadar yang sebanding dengan jumlah semasa.
+                </li>
+                <li>
+                    <strong>Sistem mekanikal (Newton's second law):</strong>{' '}
+                    <span className="font-mono">m·d²x/dt² + c·dx/dt + k·x = 0</span>. Ini ialah persamaan order 2 bagi sistem spring-jisim.
+                </li>
+            </ul>
+        </Card>
+
+        <Card>
+            <SectionTitle en="General and Particular Solution" ms="Penyelesaian umum dan penyelesaian khusus" />
+            <ul className="list-disc list-outside pl-5 space-y-2 text-text-dark">
+                <li><strong>General solution</strong> mengandungi constant sebarang <span className="font-mono">C</span>. Bilangan constant sama dengan order persamaan.</li>
+                <li><strong>Particular solution</strong> diperoleh apabila constant ditentukan menggunakan <strong>initial condition</strong>, contohnya <span className="font-mono">y(0) = 2</span>.</li>
+            </ul>
+            <Example title="Contoh: dy/dx = 3y dengan y(0) = 2">
+                <p className="font-mono">y = Ce<sup>3x</sup></p>
+                <p className="font-mono">y(0) = 2 &nbsp;⇒&nbsp; C = 2</p>
+                <p className="font-mono font-semibold">Particular solution: y = 2e<sup>3x</sup></p>
+            </Example>
+        </Card>
     </div>
 );
 
@@ -240,7 +331,7 @@ const SecondOrderSummary: React.FC = () => (
 );
 
 const Ringkasan: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<SummaryTab>('4.2');
+    const [activeTab, setActiveTab] = useState<SummaryTab>('4.1');
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -293,7 +384,9 @@ const Ringkasan: React.FC = () => {
 
                 <div role="tabpanel" className="mt-8">
                     <h2 className="mb-6 text-xl font-bold text-text-dark">{current.label}: {current.title}</h2>
-                    {activeTab === '4.2' ? <FirstOrderSummary /> : <SecondOrderSummary />}
+                    {activeTab === '4.1' && <IntroductionSummary />}
+                    {activeTab === '4.2' && <FirstOrderSummary />}
+                    {activeTab === '4.3' && <SecondOrderSummary />}
                 </div>
             </main>
         </div>
