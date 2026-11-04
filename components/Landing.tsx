@@ -85,6 +85,7 @@ const Landing: React.FC = () => {
                         <a href="#home" className="hover:text-primary transition-colors">Home</a>
                         <a href="#topik" className="hover:text-primary transition-colors">Topik</a>
                         <a href="#tutor" className="hover:text-primary transition-colors">Tutor</a>
+                        <a href="#ringkasan" className="hover:text-primary transition-colors">Ringkasan</a>
                     </nav>
 
                     <div className="flex items-center gap-2">

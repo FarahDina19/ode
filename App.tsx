@@ -11,6 +11,7 @@ import Tips from './components/Tips';
 import Guide from './components/Guide';
 import Landing from './components/Landing';
 import TopicLanding from './components/TopicLanding';
+import Ringkasan from './components/Ringkasan';
 import { topicFromHash } from './components/topics';
 
 const App: React.FC = () => {
@@ -22,6 +23,11 @@ const App: React.FC = () => {
         window.addEventListener('hashchange', onChange);
         return () => window.removeEventListener('hashchange', onChange);
     }, []);
+
+    // "#ringkasan" shows the summary page (formula and method summaries for each topic).
+    if (hash === '#ringkasan') {
+        return <Ringkasan />;
+    }
 
     const topic = topicFromHash(hash);
     if (topic) {
