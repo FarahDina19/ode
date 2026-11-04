@@ -10,10 +10,10 @@ const Introduction: React.FC = () => {
                 <div>
                     <h3 className="text-xl font-semibold mb-2">Kenapa Ini Penting? Contoh Dunia Sebenar</h3>
                     <p className="text-text-light mb-4">
-                        Persamaan pembezaan peringkat kedua kelihatan abstrak, tetapi ia menerangkan banyak fenomena di sekeliling kita. Bayangkan sebuah <strong>sistem suspensi kereta</strong>.
+                        Second-order differential equations kelihatan abstrak, tetapi ia menerangkan banyak fenomena di sekeliling kita. Bayangkan sebuah <strong>sistem suspensi kereta</strong>.
                     </p>
                     <p className="text-text-light">
-                        Apabila kereta melanggar bonggol, spring akan memampat dan penyerap hentak akan menentang pergerakan itu. Persamaan yang mengawal bagaimana suspensi kembali ke keadaan rehat adalah persamaan pembezaan peringkat kedua!
+                        Apabila kereta melanggar bonggol, spring akan memampat dan penyerap hentak akan menentang pergerakan itu. Persamaan yang mengawal bagaimana suspensi kembali ke keadaan rehat adalah second-order differential equation!
                     </p>
                 </div>
                 <div className="bg-slate-100 p-4 rounded-lg text-center">
@@ -32,7 +32,7 @@ const Introduction: React.FC = () => {
                             <p className="text-sm mt-2 font-semibold">Berayun (Underdamped)</p>
                         </div>
                     </div>
-                     <p className="text-xs mt-4 text-text-light">Visualisasi bagaimana sistem kembali kepada keseimbangan. Ini ditentukan oleh 'punca' persamaan kita.</p>
+                     <p className="text-xs mt-4 text-text-light">Visualisasi bagaimana sistem kembali kepada keseimbangan. Ini ditentukan oleh 'roots' persamaan kita.</p>
                 </div>
             </div>
         </Card>
