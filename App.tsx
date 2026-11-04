@@ -9,11 +9,13 @@ import PracticeArea from './components/PracticeArea';
 import ReferenceCard from './components/ReferenceCard';
 import Tips from './components/Tips';
 import Guide from './components/Guide';
+import Landing from './components/Landing';
 
 const App: React.FC = () => {
     return (
         <div className="bg-background-light min-h-screen text-text-dark">
-            <main className="container mx-auto p-4 md:p-8">
+            <Landing />
+            <main id="tutor" className="container mx-auto p-4 md:p-8 scroll-mt-20">
                 <Header />
 
                 <div className="space-y-8">
