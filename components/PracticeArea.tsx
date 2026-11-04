@@ -75,8 +75,8 @@ const PracticeArea: React.FC = () => {
     return (
         <Card>
             <h2 className="text-2xl font-bold mb-4">Kawasan Latihan (Abstract)</h2>
-            <div className="flex justify-between items-center mb-4">
-                <div className="flex space-x-2">
+            <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
+                <div className="flex flex-wrap gap-2">
                     {(['Mudah', 'Sederhana', 'Mencabar'] as const).map(level => (
                         <Button key={level} onClick={() => setDifficulty(level)} variant={difficulty === level ? 'primary' : 'secondary'} className={difficulty !== level ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : ''}>
                             {level}
