@@ -59,11 +59,11 @@ const IntroductionSummary: React.FC = () => (
             </ul>
             <Example title="Klasifikasi contoh">
                 <div className="overflow-x-auto">
-                    <table className="w-full border-collapse text-left text-sm">
+                    <table className="w-full border-collapse text-left text-xs sm:text-sm">
                         <thead>
                             <tr className="border-b border-emerald-200 text-emerald-800">
-                                <th className="py-2 pr-4 font-semibold">Persamaan</th>
-                                <th className="py-2 pr-4 font-semibold">Order</th>
+                                <th className="py-2 pr-2 sm:pr-4 font-semibold">Persamaan</th>
+                                <th className="py-2 pr-2 sm:pr-4 font-semibold">Order</th>
                                 <th className="py-2 font-semibold">Degree</th>
                             </tr>
                         </thead>
@@ -203,26 +203,26 @@ const FirstOrderSummary: React.FC = () => (
         <Card>
             <h2 className="mb-4 text-2xl font-bold text-text-dark">Ringkasan Pantas 4.2</h2>
             <div className="overflow-x-auto">
-                <table className="w-full border-collapse text-left text-sm">
+                <table className="w-full border-collapse text-left text-xs sm:text-sm">
                     <thead>
                         <tr className="border-b border-slate-200 text-text-light">
-                            <th className="py-2 pr-4 font-semibold">Method</th>
-                            <th className="py-2 pr-4 font-semibold">Standard form</th>
-                            <th className="py-2 pr-4 font-semibold">Key step</th>
+                            <th className="py-2 pr-2 sm:pr-4 font-semibold">Method</th>
+                            <th className="py-2 pr-2 sm:pr-4 font-semibold">Standard form</th>
+                            <th className="py-2 pr-2 sm:pr-4 font-semibold">Key step</th>
                             <th className="py-2 font-semibold">General solution</th>
                         </tr>
                     </thead>
                     <tbody className="font-mono text-text-dark">
                         <tr className="border-b border-slate-100 align-top">
-                            <td className="py-3 pr-4 font-sans font-semibold">Separation of Variables</td>
-                            <td className="py-3 pr-4">dy/dx = g(x)·h(y)</td>
-                            <td className="py-3 pr-4">∫ dy/h(y) = ∫ g(x) dx</td>
+                            <td className="py-3 pr-2 sm:pr-4 font-sans font-semibold">Separation of Variables</td>
+                            <td className="py-3 pr-2 sm:pr-4">dy/dx = g(x)·h(y)</td>
+                            <td className="py-3 pr-2 sm:pr-4">∫ dy/h(y) = ∫ g(x) dx</td>
                             <td className="py-3">Solve for y, add C</td>
                         </tr>
                         <tr className="align-top">
-                            <td className="py-3 pr-4 font-sans font-semibold">Integrating Factor</td>
-                            <td className="py-3 pr-4">dy/dx + P(x)·y = Q(x)</td>
-                            <td className="py-3 pr-4">μ = e<sup>∫P dx</sup></td>
+                            <td className="py-3 pr-2 sm:pr-4 font-sans font-semibold">Integrating Factor</td>
+                            <td className="py-3 pr-2 sm:pr-4">dy/dx + P(x)·y = Q(x)</td>
+                            <td className="py-3 pr-2 sm:pr-4">μ = e<sup>∫P dx</sup></td>
                             <td className="py-3">y = (1/μ)(∫ μQ dx + C)</td>
                         </tr>
                     </tbody>
@@ -267,12 +267,12 @@ const SecondOrderSummary: React.FC = () => (
         <Card>
             <SectionTitle en="Three Cases of General Solution" ms="Tiga kes penyelesaian umum" />
             <div className="overflow-x-auto">
-                <table className="w-full border-collapse text-left text-sm">
+                <table className="w-full border-collapse text-left text-xs sm:text-sm">
                     <thead>
                         <tr className="border-b border-slate-200 text-text-light">
-                            <th className="py-2 pr-4 font-semibold">Case</th>
-                            <th className="py-2 pr-4 font-semibold">Discriminant</th>
-                            <th className="py-2 pr-4 font-semibold">Roots</th>
+                            <th className="py-2 pr-2 sm:pr-4 font-semibold">Case</th>
+                            <th className="py-2 pr-2 sm:pr-4 font-semibold">Discriminant</th>
+                            <th className="py-2 pr-2 sm:pr-4 font-semibold">Roots</th>
                             <th className="py-2 font-semibold">General solution</th>
                         </tr>
                     </thead>
